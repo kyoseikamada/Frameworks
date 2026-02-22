@@ -15,8 +15,8 @@ const _htmlCache = new Map();
 
 async function fetchSlideHtml(id, cat) {
   if (_htmlCache.has(id)) return _htmlCache.get(id);
-  // cat='all' のスライド（表紙・まとめ）は _shared/ に置く
-  const dir = cat === 'all' ? '_shared' : cat;
+  // cat='all' のスライド（表紙・まとめ）は shared/ に置く
+  const dir = cat === 'all' ? 'shared' : cat;
   const res = await fetch(`slides/${dir}/${id}.html`);
   if (!res.ok) throw new Error(`slide not found: slides/${dir}/${id}.html`);
   const html = await res.text();
@@ -33,7 +33,7 @@ async function buildSlides() {
 
   // 全スライドを並列 fetch
   const htmlList = await Promise.all(
-    SLIDES.map(s => fetchSlideHtml(s.id, s.cat).catch(() => `<div class="s-body" style="padding:40px;color:#c00">⚠ slides/${s.cat === 'all' ? '_shared' : s.cat}/${s.id}.html が見つかりません</div>`))
+    SLIDES.map(s => fetchSlideHtml(s.id, s.cat).catch(() => `<div class="s-body" style="padding:40px;color:#c00">⚠ slides/${s.cat === 'all' ? 'shared' : s.cat}/${s.id}.html が見つかりません</div>`))
   );
 
   SLIDES.forEach((s, i) => {
