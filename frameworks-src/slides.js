@@ -1442,9 +1442,7 @@ if (isSP()) {
   goTo(0);
 }
 
-/* リサイズ時にリロード（PC⇔SPの切り替え） */
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => location.reload(), 400);
+/* 画面回転時のみリロード（resize は使わない — iPhone のアドレスバー出し入れでリロードしてしまうため） */
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => location.reload(), 300);
 });

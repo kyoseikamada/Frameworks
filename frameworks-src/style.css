@@ -20,8 +20,11 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; overflow: hidden; }
+html { height: 100%; }
 body {
+  /* dvh: iPhoneのアドレスバー出し入れによる高さ変動を受けない */
+  height: 100dvh;
+  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
   background: var(--bg);
   color: var(--ink);
@@ -278,8 +281,13 @@ body {
 @media (max-width: 768px) {
 
   /* body: スクロール解放 */
-  html, body { height: auto; overflow: auto; }
-  body { display: block; overflow-x: hidden; }
+  html { height: auto; }
+  body {
+    height: auto !important;
+    overflow: auto;
+    overflow-x: hidden;
+    display: block;
+  }
 
   /* Header: sticky */
   #top-header {
