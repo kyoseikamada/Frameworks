@@ -1,0 +1,73 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Observer — 変化の通知</div>
+  <div class="s-pg">gof-18</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクトの状態変化を、依存する<strong>全オブジェクトに自動通知・更新</strong>する。Publish-Subscribeとも呼ばれる。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>MVCのModel→View通知</li>
+        <li>イベントシステム・リアクティブプログラミング</li>
+        <li>株価・センサー値の変化監視</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Subject（Publisher）<br>
+        + subscribe(Observer)<br>
+        + notify()<br>
+        　　→ Observer（Subscriber）<br>
+        　　　　+ update()
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（株価通知）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface Observer {
+    void update(String stock, double price);
+}
+
+class StockMarket {
+    private Map&lt;String, List&lt;Observer&gt;&gt; subscribers
+        = new HashMap&lt;&gt;();
+
+    void subscribe(String stock, Observer o) {
+        subscribers.computeIfAbsent(
+            stock, k -> new ArrayList&lt;&gt;()).add(o);
+    }
+    void unsubscribe(String stock, Observer o) {
+        subscribers.getOrDefault(stock,
+            Collections.emptyList()).remove(o);
+    }
+    void setPrice(String stock, double price) {
+        System.out.println(stock + " = " + price);
+        subscribers.getOrDefault(stock,
+            Collections.emptyList())
+            .forEach(o -> o.update(stock, price));
+    }
+}
+
+class AlertObserver implements Observer {
+    private double threshold;
+    private String name;
+    AlertObserver(String name, double threshold) {
+        this.name = name; this.threshold = threshold;
+    }
+    public void update(String stock, double price) {
+        if (price > threshold)
+            System.out.println("⚠ " + name
+                + ": " + stock + " exceeded " + threshold);
+    }
+}
+
+// 使用例
+StockMarket market = new StockMarket();
+market.subscribe("AAPL", new AlertObserver("Alice", 150));
+market.subscribe("AAPL", new AlertObserver("Bob",   160));
+market.setPrice("AAPL", 155); // Aliceのみアラート
+market.setPrice("AAPL", 165); // 両者アラート</pre>
+    </div>
+  </div>
+</div>

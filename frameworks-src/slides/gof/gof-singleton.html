@@ -1,0 +1,61 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#c94a2c">Creational</div>
+  <div class="s-title">Singleton — 唯一のインスタンス</div>
+  <div class="s-pg">gof-01</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">クラスのインスタンスが<strong>必ず1つだけ</strong>存在することを保証し、グローバルなアクセス点を提供する。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>設定情報・ロガー・DB接続プールなど「共有リソース」の管理</li>
+        <li>インスタンスが複数存在すると矛盾が生じる場合</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:12px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        ┌─────────────────────┐<br>
+        │      Singleton       │<br>
+        ├─────────────────────┤<br>
+        │ - instance: Singleton│<br>
+        ├─────────────────────┤<br>
+        │ - Singleton()        │<br>
+        │ + getInstance(): S   │<br>
+        └─────────────────────┘
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（スレッドセーフ版）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">public class AppConfig {
+    // volatile: 可視性を保証
+    private static volatile AppConfig instance;
+    private String dbUrl;
+
+    private AppConfig() {
+        dbUrl = "jdbc:postgresql://localhost/app";
+    }
+
+    // Double-Checked Locking
+    public static AppConfig getInstance() {
+        if (instance == null) {
+            synchronized (AppConfig.class) {
+                if (instance == null) {
+                    instance = new AppConfig();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public String getDbUrl() { return dbUrl; }
+}
+
+// 使用例
+AppConfig c1 = AppConfig.getInstance();
+AppConfig c2 = AppConfig.getInstance();
+System.out.println(c1 == c2); // true</pre>
+      <div class="info-box" style="font-size:10px;margin-top:8px">⚠ <strong>注意：</strong>グローバル状態はテストを困難にする。DIコンテナで代替できる場合はそちらを優先。</div>
+    </div>
+  </div>
+</div>

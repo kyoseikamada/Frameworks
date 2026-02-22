@@ -1,0 +1,65 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Chain of Responsibility — 連鎖的処理</div>
+  <div class="s-pg">gof-13</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">リクエストを処理できるオブジェクトが見つかるまで<strong>ハンドラのチェーンに沿って渡していく</strong>。送信者と受信者の結合を避ける。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>HTTPミドルウェアチェーン（認証→ログ→処理）</li>
+        <li>UIイベントのバブリング</li>
+        <li>承認ワークフロー（担当→課長→部長）</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Handler(abstract)<br>
+        - next: Handler<br>
+        + handle(req)<br>
+        　　↑<br>
+        ConcreteHandlerA → ConcreteHandlerB
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（承認ワークフロー）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">abstract class Approver {
+    protected Approver next;
+    Approver setNext(Approver next) {
+        this.next = next; return next;
+    }
+    abstract void approve(int amount);
+}
+
+class Staff extends Approver {
+    public void approve(int amount) {
+        if (amount <= 10000)
+            System.out.println("Staff approved: " + amount);
+        else if (next != null) next.approve(amount);
+    }
+}
+class Manager extends Approver {
+    public void approve(int amount) {
+        if (amount <= 100000)
+            System.out.println("Manager approved: " + amount);
+        else if (next != null) next.approve(amount);
+    }
+}
+class Director extends Approver {
+    public void approve(int amount) {
+        System.out.println("Director approved: " + amount);
+    }
+}
+
+// 使用例 — チェーン構築
+Approver staff = new Staff();
+staff.setNext(new Manager()).setNext(new Director());
+
+staff.approve(5000);   // Staff approved
+staff.approve(50000);  // Manager approved
+staff.approve(200000); // Director approved</pre>
+    </div>
+  </div>
+</div>

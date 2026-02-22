@@ -1,0 +1,64 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#c94a2c">Creational</div>
+  <div class="s-title">Prototype — コピーによる生成</div>
+  <div class="s-pg">gof-05</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">既存インスタンスを<strong>複製（クローン）</strong>することで新しいオブジェクトを生成する。クラスに依存せず複製できる。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>生成コストが高いオブジェクトを再利用したい</li>
+        <li>具体クラスを知らずにオブジェクトを複製したい</li>
+        <li>ゲームのキャラクターテンプレート、設定のプリセット</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">浅いコピー vs 深いコピー</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th></th><th>浅いコピー</th><th>深いコピー</th></tr>
+        <tr><td>参照型</td><td>参照を共有</td><td>再帰的に複製</td></tr>
+        <tr><td>Object.clone()</td><td>デフォルト</td><td>要オーバーライド</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">class EnemyConfig implements Cloneable {
+    private String type;
+    private int hp;
+    private List&lt;String&gt; skills;
+
+    EnemyConfig(String type, int hp,
+                List&lt;String&gt; skills) {
+        this.type   = type;
+        this.hp     = hp;
+        this.skills = skills;
+    }
+
+    // 深いコピー
+    @Override
+    public EnemyConfig clone() {
+        try {
+            EnemyConfig copy =
+                (EnemyConfig) super.clone();
+            // Listを個別にコピー
+            copy.skills = new ArrayList&lt;&gt;(this.skills);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void setHp(int hp) { this.hp = hp; }
+}
+
+// 使用例
+EnemyConfig template = new EnemyConfig(
+    "Goblin", 100,
+    Arrays.asList("Bite", "Flee")
+);
+EnemyConfig boss = template.clone();
+boss.setHp(500); // テンプレートは変わらない</pre>
+    </div>
+  </div>
+</div>

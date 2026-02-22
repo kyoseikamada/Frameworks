@@ -1,0 +1,72 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Command — 操作のオブジェクト化</div>
+  <div class="s-pg">gof-14</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">リクエストを<strong>オブジェクトとしてカプセル化</strong>する。操作のキュー・ログ・Undo/Redoが可能になる。</div>
+      <div class="label-sm" style="margin-bottom:6px">メリット</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>Undo/Redo の実装が容易</li>
+        <li>操作のログ・再実行・遅延実行</li>
+        <li>呼び出し元と実行者の完全分離</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">登場人物</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Invoker（起動者）<br>
+        　→ Command（execute / undo）<br>
+        　　　→ Receiver（実際の処理）
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（テキストエディタのUndo）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface Command {
+    void execute();
+    void undo();
+}
+
+class TextEditor {
+    private StringBuilder text = new StringBuilder();
+    void insert(String s) { text.append(s); }
+    void delete(int len) {
+        int start = text.length() - len;
+        if (start >= 0) text.delete(start, text.length());
+    }
+    String getText() { return text.toString(); }
+}
+
+class InsertCommand implements Command {
+    private TextEditor editor;
+    private String text;
+    InsertCommand(TextEditor e, String t) {
+        editor = e; text = t;
+    }
+    public void execute() { editor.insert(text); }
+    public void undo()    { editor.delete(text.length()); }
+}
+
+// Invoker
+class CommandHistory {
+    private Deque&lt;Command&gt; history = new ArrayDeque&lt;&gt;();
+    void execute(Command cmd) {
+        cmd.execute(); history.push(cmd);
+    }
+    void undo() {
+        if (!history.isEmpty()) history.pop().undo();
+    }
+}
+
+// 使用例
+TextEditor editor = new TextEditor();
+CommandHistory hist = new CommandHistory();
+hist.execute(new InsertCommand(editor, "Hello"));
+hist.execute(new InsertCommand(editor, " World"));
+System.out.println(editor.getText()); // Hello World
+hist.undo();
+System.out.println(editor.getText()); // Hello</pre>
+    </div>
+  </div>
+</div>

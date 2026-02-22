@@ -1,0 +1,63 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">State — 状態による振る舞いの変化</div>
+  <div class="s-pg">gof-19</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクトの<strong>内部状態が変化したとき、振る舞いも変化</strong>するようにする。状態をオブジェクトとして表現し、if/switch地獄を排除する。</div>
+      <div class="label-sm" style="margin-bottom:6px">Strategyとの違い</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th></th><th>Strategy</th><th>State</th></tr>
+        <tr><td>切り替え</td><td>クライアントが行う</td><td>自身が行う</td></tr>
+        <tr><td>状態認識</td><td>なし</td><td>互いを知る場合も</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">例</div>
+      <ul class="cl">
+        <li>自動販売機（待機・コイン投入済・売切）</li>
+        <li>TCPコネクション（CLOSED・LISTEN・ESTABLISHED）</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（自動販売機）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface VendingState {
+    void insertCoin(VendingMachine vm);
+    void pressButton(VendingMachine vm);
+}
+
+class IdleState implements VendingState {
+    public void insertCoin(VendingMachine vm) {
+        System.out.println("コインを受け付けました");
+        vm.setState(new HasCoinState());
+    }
+    public void pressButton(VendingMachine vm) {
+        System.out.println("先にコインを入れてください");
+    }
+}
+class HasCoinState implements VendingState {
+    public void insertCoin(VendingMachine vm) {
+        System.out.println("既にコインが入っています");
+    }
+    public void pressButton(VendingMachine vm) {
+        System.out.println("商品を提供しました");
+        vm.setState(new IdleState());
+    }
+}
+
+class VendingMachine {
+    private VendingState state = new IdleState();
+    void setState(VendingState s) { this.state = s; }
+    void insertCoin()  { state.insertCoin(this); }
+    void pressButton() { state.pressButton(this); }
+}
+
+// 使用例
+VendingMachine vm = new VendingMachine();
+vm.pressButton(); // 先にコインを入れてください
+vm.insertCoin();  // コインを受け付けました
+vm.pressButton(); // 商品を提供しました</pre>
+    </div>
+  </div>
+</div>

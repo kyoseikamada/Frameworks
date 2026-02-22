@@ -1,0 +1,64 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#3a5a7a">Linux基礎</div>
+  <div class="s-title">ネットワーク基礎</div>
+  <div class="s-pg">linux-basics-05</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">ネットワーク設定ファイル</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>ファイル</th><th>役割</th></tr>
+        <tr><td>/etc/hosts</td><td>ホスト名→IP静的解決</td></tr>
+        <tr><td>/etc/resolv.conf</td><td>DNSサーバー設定</td></tr>
+        <tr><td>/etc/hostname</td><td>このホストの名前</td></tr>
+        <tr><td>/etc/network/interfaces</td><td>NIC設定（Debian系）</td></tr>
+        <tr><td>/etc/sysconfig/network-scripts/</td><td>NIC設定（RHEL系）</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">ポートとサービスの対応</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>ポート</th><th>サービス</th></tr>
+        <tr><td>22</td><td>SSH</td></tr>
+        <tr><td>80</td><td>HTTP</td></tr>
+        <tr><td>443</td><td>HTTPS</td></tr>
+        <tr><td>3306</td><td>MySQL</td></tr>
+        <tr><td>5432</td><td>PostgreSQL</td></tr>
+        <tr><td>6379</td><td>Redis</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">ネットワーク確認コマンド</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># IPアドレス確認
+ip addr show           # インタフェース一覧
+ip addr show eth0      # eth0のみ
+hostname -I            # IPアドレスのみ表示
+
+# ルーティング
+ip route show
+ip route get 8.8.8.8   # 経路確認
+
+# 接続確認
+ping -c 4 google.com
+traceroute google.com  # 経路追跡
+mtr google.com         # リアルタイム経路追跡
+
+# DNS解決
+dig google.com
+dig google.com A @8.8.8.8  # 特定NSに問い合わせ
+nslookup google.com
+host google.com
+
+# ポート・接続確認
+ss -tuln               # LISTEN中のポート一覧
+ss -tunp               # プロセス付き
+netstat -tuln          # 旧版（非推奨）
+curl -I https://example.com   # HTTPヘッダー確認
+wget -O- https://example.com  # コンテンツ取得
+
+# ファイアウォール（Ubuntu）
+ufw status
+ufw allow 80/tcp
+ufw deny 3306</pre>
+    </div>
+  </div>
+</div>

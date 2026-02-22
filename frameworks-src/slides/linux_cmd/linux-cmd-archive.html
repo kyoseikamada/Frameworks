@@ -1,0 +1,59 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">圧縮・展開とパッケージ管理</div>
+  <div class="s-pg">linux-cmd-06</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">ファイルを圧縮・展開する（tar）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># フォルダをまとめて圧縮する
+tar czvf archive.tar.gz フォルダ名/
+# c=作る z=gzip圧縮 v=進捗表示 f=ファイル名
+
+# 圧縮ファイルを展開する
+tar xzvf archive.tar.gz
+# x=展開 z=gzip解凍 v=進捗表示 f=ファイル名
+
+# 中身を確認する（展開せずに）
+tar tzvf archive.tar.gz
+
+# zipファイルの場合
+zip -r archive.zip フォルダ名/
+unzip archive.zip</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><strong>覚え方：</strong>作るときは <code>c</code>（create）、展開するときは <code>x</code>（extract）。<code>z</code> は gzip 圧縮の有無。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">ソフトをインストールする（apt）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># パッケージ情報を最新にする（まずこれ）
+sudo apt update
+
+# ソフトをインストール
+sudo apt install git
+sudo apt install nginx
+sudo apt install vim
+
+# ソフトを削除
+sudo apt remove nginx
+
+# インストール済みか確認
+apt list --installed | grep git
+
+# ソフトを検索する
+apt search nginx</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">よくある流れ</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 1. まずパッケージ情報を更新
+sudo apt update
+
+# 2. インストール
+sudo apt install docker.io
+
+# 3. 自動起動を設定
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# 4. 動作確認
+docker --version</pre>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Composite — 木構造の均一操作</div>
+  <div class="s-pg">gof-08</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクトを<strong>木構造に組み立て、個別オブジェクトとコンテナを同一視</strong>して操作できるようにする。</div>
+      <div class="label-sm" style="margin-bottom:6px">例</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>ファイルシステム（ファイル＆フォルダ）</li>
+        <li>UIコンポーネントツリー</li>
+        <li>組織図（個人と部門）</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        &lt;&lt;Component&gt;&gt;<br>
+        + operation()<br>
+        　↑　　　　　　↑<br>
+        Leaf　　　Composite<br>
+        　　　　　+ children: List&lt;Component&gt;<br>
+        　　　　　+ add() / remove()
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（ファイルシステム）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface FileSystem {
+    void show(String indent);
+    long size();
+}
+
+// Leaf
+class File implements FileSystem {
+    private String name; private long size;
+    File(String name, long size) {
+        this.name=name; this.size=size;
+    }
+    public void show(String i) {
+        System.out.println(i + name + " (" + size + "B)");
+    }
+    public long size() { return size; }
+}
+
+// Composite
+class Directory implements FileSystem {
+    private String name;
+    private List&lt;FileSystem&gt; children = new ArrayList&lt;&gt;();
+    Directory(String name) { this.name = name; }
+    void add(FileSystem f) { children.add(f); }
+    public void show(String i) {
+        System.out.println(i + name + "/");
+        children.forEach(c -> c.show(i + "  "));
+    }
+    public long size() {
+        return children.stream().mapToLong(FileSystem::size).sum();
+    }
+}
+
+// 使用例
+Directory root = new Directory("root");
+root.add(new File("readme.md", 1024));
+Directory src = new Directory("src");
+src.add(new File("Main.java", 2048));
+root.add(src);
+root.show(""); // 再帰的に表示</pre>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#c94a2c">Creational</div>
+  <div class="s-title">Abstract Factory — 関連オブジェクト群の生成</div>
+  <div class="s-pg">gof-03</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">具体的なクラスを指定せずに、<strong>関連・依存するオブジェクトのファミリーを生成するインタフェース</strong>を提供する。</div>
+      <div class="label-sm" style="margin-bottom:6px">Factory Method との違い</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th></th><th>Factory Method</th><th>Abstract Factory</th></tr>
+        <tr><td>生成数</td><td>1種類</td><td>複数種（ファミリー）</td></tr>
+        <tr><td>手段</td><td>継承</td><td>委譲</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">クラス図（概略）</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        &lt;&lt;interface&gt;&gt; GUIFactory<br>
+        + createButton(): Button<br>
+        + createCheckbox(): Checkbox<br>
+        　　↑　　　　　↑<br>
+        WinFactory &nbsp; MacFactory
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+class WinFactory implements GUIFactory {
+    public Button createButton() {
+        return new WinButton();
+    }
+    public Checkbox createCheckbox() {
+        return new WinCheckbox();
+    }
+}
+class MacFactory implements GUIFactory {
+    public Button createButton() {
+        return new MacButton();
+    }
+    public Checkbox createCheckbox() {
+        return new MacCheckbox();
+    }
+}
+
+class Application {
+    private Button btn;
+    private Checkbox cb;
+
+    Application(GUIFactory factory) {
+        btn = factory.createButton();
+        cb  = factory.createCheckbox();
+    }
+    void render() { btn.render(); cb.render(); }
+}
+
+// 使用例 — OS判定で切り替え
+GUIFactory factory = isWindows()
+    ? new WinFactory() : new MacFactory();
+new Application(factory).render();</pre>
+    </div>
+  </div>
+</div>

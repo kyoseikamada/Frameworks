@@ -1,0 +1,74 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Memento — 状態の保存と復元</div>
+  <div class="s-pg">gof-17</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">カプセル化を破らずに<strong>オブジェクトの内部状態を保存・復元</strong>する。スナップショットパターンとも呼ばれる。</div>
+      <div class="label-sm" style="margin-bottom:6px">登場人物</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>役割</th><th>責務</th></tr>
+        <tr><td>Originator</td><td>状態を持つ本体。Mementoを生成・復元</td></tr>
+        <tr><td>Memento</td><td>状態のスナップショット</td></tr>
+        <tr><td>Caretaker</td><td>Mementoを管理（中身は見ない）</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">Commandとの違い</div>
+      <div class="info-box" style="font-size:10px">Commandは「操作の逆実行」でUndoするが、MementoはState全体をスナップショットで復元する。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（テキスト編集のSnapshot）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// Memento — 状態を保持（外部から変更不可）
+class EditorMemento {
+    private final String content;
+    EditorMemento(String content) {
+        this.content = content;
+    }
+    String getContent() { return content; }
+}
+
+// Originator
+class Editor {
+    private String content = "";
+
+    void type(String text) { content += text; }
+    String getContent()    { return content; }
+
+    EditorMemento save() {
+        return new EditorMemento(content);
+    }
+    void restore(EditorMemento m) {
+        content = m.getContent();
+    }
+}
+
+// Caretaker — Mementoを保管するだけ
+class History {
+    private Deque&lt;EditorMemento&gt; history
+        = new ArrayDeque&lt;&gt;();
+
+    void push(EditorMemento m) { history.push(m); }
+    EditorMemento pop()        { return history.pop(); }
+    boolean isEmpty()          { return history.isEmpty(); }
+}
+
+// 使用例
+Editor editor = new Editor();
+History history = new History();
+
+editor.type("Hello");
+history.push(editor.save());   // スナップショット
+editor.type(" World");
+history.push(editor.save());
+editor.type("!!!");
+
+System.out.println(editor.getContent()); // Hello World!!!
+editor.restore(history.pop());
+System.out.println(editor.getContent()); // Hello World
+editor.restore(history.pop());
+System.out.println(editor.getContent()); // Hello</pre>
+    </div>
+  </div>
+</div>

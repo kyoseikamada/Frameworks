@@ -1,0 +1,50 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">ネットワーク確認・SSH</div>
+  <div class="s-pg">linux-cmd-05</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">ネットワークの基本確認</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 自分のIPアドレスを確認する
+ip addr show
+hostname -I        # IPアドレスだけ表示
+
+# 接続できるか確認する（ping）
+ping google.com
+ping -c 3 8.8.8.8  # 3回だけ送って終わる
+# Ctrl+C で終了
+
+# URLにアクセスする（curl）
+curl https://example.com           # 本文を表示
+curl -I https://example.com        # ヘッダーだけ確認
+curl -o file.zip https://example.com/file.zip  # ダウンロード
+
+# ファイルをダウンロードする（wget）
+wget https://example.com/file.zip</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">SSH — リモートサーバーに接続する</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 基本的な接続
+ssh ユーザー名@サーバーのIPアドレス
+ssh alice@192.168.1.10
+
+# 秘密鍵（.pem ファイル）を使って接続
+ssh -i ~/.ssh/mykey.pem alice@192.168.1.10
+
+# 接続を切る
+exit</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">SCP — ファイルを転送する</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># ローカル → リモート（アップロード）
+scp memo.txt alice@192.168.1.10:/home/alice/
+
+# リモート → ローカル（ダウンロード）
+scp alice@192.168.1.10:/home/alice/memo.txt .
+
+# フォルダごと転送（-r）
+scp -r ./project alice@192.168.1.10:~/</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><strong>初めてSSH接続するとき：</strong>"Are you sure you want to continue connecting?" と聞かれたら <code>yes</code> と入力する。これはサーバーの公開鍵をローカルに登録する確認。</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Flyweight — 共有による軽量化</div>
+  <div class="s-pg">gof-11</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">多数の細粒度オブジェクトを<strong>共有して効率的に扱う</strong>。内部状態（変わらない）と外部状態（変わる）を分離する。</div>
+      <div class="label-sm" style="margin-bottom:6px">内部状態 vs 外部状態</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>種類</th><th>内容</th><th>保存先</th></tr>
+        <tr><td>内部状態</td><td>共有可能な不変データ（文字の形など）</td><td>Flyweight内</td></tr>
+        <tr><td>外部状態</td><td>コンテキスト依存（座標・色など）</td><td>呼び出し元</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">実例</div>
+      <ul class="cl">
+        <li>テキストエディタの文字オブジェクト</li>
+        <li>ゲームの大量の木・弾丸オブジェクト</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（文字の描画）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// Flyweight — 内部状態のみ保持
+class CharGlyph {
+    private final char c;      // 内部状態（共有）
+    CharGlyph(char c) { this.c = c; }
+    // x,y は外部状態（呼び出し元が渡す）
+    void draw(int x, int y, String color) {
+        System.out.printf("'%c' at (%d,%d) %s%n",
+                           c, x, y, color);
+    }
+}
+
+// Factory — キャッシュで共有を管理
+class GlyphFactory {
+    private Map&lt;Character, CharGlyph&gt; cache
+        = new HashMap&lt;&gt;();
+
+    CharGlyph getGlyph(char c) {
+        return cache.computeIfAbsent(c, CharGlyph::new);
+    }
+}
+
+// 使用例
+GlyphFactory factory = new GlyphFactory();
+String text = "HELLO";
+for (int i = 0; i < text.length(); i++) {
+    CharGlyph g = factory.getGlyph(text.charAt(i));
+    g.draw(i * 10, 0, "black");
+}
+// 'H'インスタンスは1つだけ — 何度使っても共有</pre>
+    </div>
+  </div>
+</div>

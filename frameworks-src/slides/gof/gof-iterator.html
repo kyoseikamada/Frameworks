@@ -1,0 +1,62 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Iterator — 順次アクセス</div>
+  <div class="s-pg">gof-15</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">集約オブジェクトの内部表現を公開せずに、その要素に<strong>順次アクセスする方法を提供</strong>する。</div>
+      <div class="label-sm" style="margin-bottom:6px">Javaとの関係</div>
+      <div class="info-box" style="margin-bottom:10px">JavaのIterableとIteratorインタフェース、for-each文はこのパターンの標準実装。コレクションフレームワーク全体がIteratorを前提に設計されている。</div>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Iterable&lt;T&gt;          Iterator&lt;T&gt;<br>
+        + iterator()  →→→   + hasNext()<br>
+        　　↑　　　　　　　　　+ next()<br>
+        BookShelf　　　　　　BookIterator
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（カスタムIterator）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">class Book {
+    private String title;
+    Book(String title) { this.title = title; }
+    String getTitle()  { return title; }
+}
+
+class BookShelf implements Iterable&lt;Book&gt; {
+    private List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+    void add(Book book) { books.add(book); }
+
+    @Override
+    public Iterator&lt;Book&gt; iterator() {
+        return new BookIterator();
+    }
+
+    private class BookIterator implements Iterator&lt;Book&gt; {
+        private int index = 0;
+
+        public boolean hasNext() {
+            return index < books.size();
+        }
+        public Book next() {
+            return books.get(index++);
+        }
+    }
+}
+
+// 使用例
+BookShelf shelf = new BookShelf();
+shelf.add(new Book("Clean Code"));
+shelf.add(new Book("Refactoring"));
+shelf.add(new Book("Design Patterns"));
+
+// for-each で透過的に使える
+for (Book book : shelf) {
+    System.out.println(book.getTitle());
+}</pre>
+    </div>
+  </div>
+</div>

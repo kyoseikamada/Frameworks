@@ -1,0 +1,59 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">ファイル操作の基本</div>
+  <div class="s-pg">linux-cmd-01</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">場所の確認・移動</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 今どこにいるか確認
+pwd
+# → /home/alice
+
+# ファイル・フォルダの一覧を表示
+ls
+ls -l        # 詳細（日時・権限）
+ls -la       # 隠しファイルも表示（.bashrcなど）
+
+# 移動する
+cd /var/log        # 絶対パスで移動
+cd Documents       # 相対パスで移動
+cd ..              # 1つ上に戻る
+cd ~               # ホームに戻る
+cd -               # 直前のフォルダに戻る</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">ファイル・フォルダの作成</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 空ファイルを作る
+touch memo.txt
+
+# フォルダを作る
+mkdir work
+mkdir -p a/b/c   # 深い階層も一度に作れる</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">コピー・移動・削除</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># ファイルをコピー
+cp memo.txt memo_backup.txt
+cp memo.txt /tmp/            # フォルダへコピー
+
+# フォルダごとコピー（-r が必要）
+cp -r work/ work_backup/
+
+# 移動・名前変更（mv は兼用）
+mv memo.txt note.txt         # 名前変更
+mv note.txt /tmp/            # 場所を移動
+
+# 削除（⚠ ゴミ箱はない・元に戻せない）
+rm memo.txt                  # ファイル削除
+rm -r old_folder/            # フォルダごと削除
+rm -i memo.txt               # 削除前に確認する</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">ディスク・サイズ確認</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># フォルダのサイズを調べる
+du -sh Documents/    # -s: 合計 -h: 人が読める単位
+
+# ディスクの空き容量を確認
+df -h</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px">⚠ <strong>rm -r の注意：</strong>確認なしに全削除されます。特に <code>rm -rf /</code> などは絶対に実行しないこと。</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#c94a2c">Creational</div>
+  <div class="s-title">Factory Method — 生成をサブクラスに委譲</div>
+  <div class="s-pg">gof-02</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクト生成のインタフェースを定義するが、<strong>どのクラスをインスタンス化するかはサブクラスに決めさせる</strong>。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>生成するオブジェクトの型が実行時まで決まらない</li>
+        <li>生成ロジックをサブクラスで差し替えたい</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:12px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        &lt;&lt;abstract&gt;&gt; Dialog<br>
+        + createButton(): Button  ← factory method<br>
+        + render()<br>
+        　　　↑<br>
+        WindowsDialog &nbsp; WebDialog<br>
+        + createButton() + createButton()<br>
+        　　　　↓ 生成<br>
+        &lt;&lt;interface&gt;&gt; Button<br>
+        WinButton &nbsp; HTMLButton
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface Button {
+    void render();
+}
+class WinButton implements Button {
+    public void render() {
+        System.out.println("Windows button");
+    }
+}
+class WebButton implements Button {
+    public void render() {
+        System.out.println("HTML button");
+    }
+}
+
+abstract class Dialog {
+    // Factory Method
+    protected abstract Button createButton();
+
+    public void render() {
+        Button btn = createButton(); // サブクラスが決める
+        btn.render();
+    }
+}
+class WindowsDialog extends Dialog {
+    protected Button createButton() {
+        return new WinButton();
+    }
+}
+class WebDialog extends Dialog {
+    protected Button createButton() {
+        return new WebButton();
+    }
+}
+
+// 使用例
+Dialog dialog = new WindowsDialog();
+dialog.render(); // "Windows button"</pre>
+    </div>
+  </div>
+</div>

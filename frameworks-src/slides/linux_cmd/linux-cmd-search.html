@@ -1,0 +1,58 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">ファイル検索（find）</div>
+  <div class="s-pg">linux-cmd-03</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">find — ファイルを探す</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 基本形: find 探す場所 条件
+find /etc -name "*.conf"
+# → /etc 以下の .conf ファイルを全て表示
+
+# カレントディレクトリから探す
+find . -name "Main.java"
+
+# 名前の一部で探す（* はワイルドカード）
+find . -name "*test*"
+
+# ファイルだけ、フォルダだけに絞る
+find /tmp -type f    # ファイルのみ
+find /var -type d    # フォルダのみ
+
+# 更新日時で絞る
+find /tmp -mtime -1  # 1日以内に更新されたもの</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">エラーを非表示にする</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># "Permission denied" が大量に出る場合
+find / -name "*.conf" 2>/dev/null
+# 2>/dev/null = エラー出力を捨てる</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">which / whereis — コマンドの場所を調べる</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># このコマンドはどこにある？
+which python3
+# → /usr/bin/python3
+
+which git
+# → /usr/bin/git
+
+# コマンドが入っているか確認にも使える
+which docker || echo "docker is not installed"</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">よく使う検索パターン</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 設定ファイルを探す
+find /etc -name "nginx.conf"
+
+# ログファイルを探す
+find /var/log -name "*.log"
+
+# 特定の拡張子のファイルを全て探す
+find . -name "*.java" | wc -l  # 件数確認
+find . -name "*.java"          # 一覧表示
+
+# 今日更新されたファイルを探す
+find . -mtime -1 -type f</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><strong>よくある間違い：</strong><code>find -name *.conf</code> のように <code>""</code> を省略するとシェルがワイルドカードを展開してしまう。必ず <code>"*.conf"</code> のようにクォートで囲む。</div>
+    </div>
+  </div>
+</div>

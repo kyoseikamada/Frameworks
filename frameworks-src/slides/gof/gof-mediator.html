@@ -1,0 +1,68 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Mediator — 相互作用の集中管理</div>
+  <div class="s-pg">gof-16</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクト間の相互作用を<strong>Mediatorオブジェクトに集中させる</strong>。オブジェクト同士が直接参照し合うのを防ぎ、疎結合を実現する。</div>
+      <div class="label-sm" style="margin-bottom:6px">問題</div>
+      <div style="background:#fdf0ee;padding:10px;font-size:10px;line-height:1.7;margin-bottom:8px">
+        多数のUIコンポーネントが互いに参照すると「スパゲッティ」になる。
+        ボタンがテキストフィールドを知り、テキストフィールドがラベルを知り…
+      </div>
+      <div class="label-sm" style="margin-bottom:6px">解決</div>
+      <div style="background:#e8f4ec;padding:10px;font-size:10px;line-height:1.7">
+        全コンポーネントはMediatorだけを知る。
+        変更通知をMediatorに送り、Mediatorが他を調整する。
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（チャットルーム）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface ChatMediator {
+    void sendMessage(String msg, User sender);
+    void addUser(User user);
+}
+
+class ChatRoom implements ChatMediator {
+    private List&lt;User&gt; users = new ArrayList&lt;&gt;();
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+    public void sendMessage(String msg, User sender) {
+        users.stream()
+             .filter(u -> u != sender)
+             .forEach(u -> u.receive(msg, sender.name));
+    }
+}
+
+class User {
+    String name;
+    private ChatMediator mediator;
+
+    User(String name, ChatMediator mediator) {
+        this.name = name;
+        this.mediator = mediator;
+    }
+    void send(String msg) {
+        System.out.println(name + " sends: " + msg);
+        mediator.sendMessage(msg, this);
+    }
+    void receive(String msg, String from) {
+        System.out.println(name + " received from "
+                           + from + ": " + msg);
+    }
+}
+
+// 使用例
+ChatRoom room = new ChatRoom();
+User alice = new User("Alice", room);
+User bob   = new User("Bob",   room);
+room.addUser(alice); room.addUser(bob);
+alice.send("Hello!"); // Bobだけ受け取る</pre>
+    </div>
+  </div>
+</div>

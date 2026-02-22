@@ -1,0 +1,54 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">テキスト表示・検索</div>
+  <div class="s-pg">linux-cmd-02</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">ファイルの中身を見る</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 全部表示する
+cat memo.txt
+
+# スクロールして読む（q で終了）
+less app.log
+
+# 先頭・末尾だけ表示
+head -5 app.log     # 先頭5行
+tail -5 app.log     # 末尾5行
+
+# ログをリアルタイムで監視する
+tail -f /var/log/syslog
+# → 新しい行が書き込まれるたびに表示される
+# → Ctrl+C で終了</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">行数・文字数を数える</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0">wc -l app.log    # 行数を数える
+wc -c app.log    # バイト数を数える</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">文字列を検索する（grep）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># ファイルの中から行を探す
+grep "error" app.log
+
+# 大文字・小文字を区別しない
+grep -i "ERROR" app.log
+
+# 行番号も表示する
+grep -n "error" app.log
+
+# 一致しない行だけ表示（除外）
+grep -v "DEBUG" app.log
+
+# フォルダの中を再帰的に検索
+grep -r "TODO" ./src/</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">パイプ — コマンドをつなぐ</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># "|" で前のコマンドの結果を次に渡す
+cat /etc/passwd | grep alice
+ls -la | grep ".log"
+
+# エラーログだけ取り出して行数を数える
+grep "ERROR" app.log | wc -l</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><strong>less の操作：</strong>スペース=次ページ / b=前ページ / /キーワード=検索 / q=終了</div>
+    </div>
+  </div>
+</div>

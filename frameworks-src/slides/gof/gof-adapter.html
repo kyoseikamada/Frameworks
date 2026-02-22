@@ -1,0 +1,57 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Adapter — インタフェース変換</div>
+  <div class="s-pg">gof-06</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">互換性のないインタフェースを持つクラスを<strong>変換して連携できるようにする</strong>。既存クラスを修正せずに再利用する。</div>
+      <div class="label-sm" style="margin-bottom:6px">例え</div>
+      <div class="info-box" style="margin-bottom:10px">海外の電源プラグ変換アダプタ。コンセント（クライアント）も電気機器（Adaptee）も変えずに接続できる。</div>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Client → &lt;&lt;Target&gt;&gt;<br>
+        　　　　　　　　↑ implements<br>
+        　　　　　　Adapter<br>
+        　　　　　　　　→ has-a → Adaptee<br>
+        　　　　　　　　　　(旧ライブラリ等)
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（旧ロガーを新インタフェースに適合）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// 新しいインタフェース（Target）
+interface Logger {
+    void log(String level, String msg);
+}
+
+// 既存クラス（Adaptee）— 変更したくない
+class LegacyLogger {
+    void writeLog(String msg) {
+        System.out.println("[LOG] " + msg);
+    }
+}
+
+// Adapter — LegacyLoggerをLoggerに変換
+class LoggerAdapter implements Logger {
+    private final LegacyLogger legacy;
+
+    LoggerAdapter(LegacyLogger legacy) {
+        this.legacy = legacy;
+    }
+
+    @Override
+    public void log(String level, String msg) {
+        // 新インタフェース → 旧メソッドに変換
+        legacy.writeLog(level + ": " + msg);
+    }
+}
+
+// 使用例
+Logger logger = new LoggerAdapter(new LegacyLogger());
+logger.log("INFO", "Application started");
+// → "[LOG] INFO: Application started"</pre>
+    </div>
+  </div>
+</div>

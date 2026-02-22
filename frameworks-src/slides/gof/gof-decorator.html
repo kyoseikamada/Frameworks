@@ -1,0 +1,63 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Decorator — 動的な機能追加</div>
+  <div class="s-pg">gof-09</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクトに<strong>サブクラス化せず動的に新しい責任を追加</strong>する。Wrapperとも呼ばれる。</div>
+      <div class="label-sm" style="margin-bottom:6px">継承との違い</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th></th><th>継承</th><th>Decorator</th></tr>
+        <tr><td>タイミング</td><td>コンパイル時</td><td>実行時</td></tr>
+        <tr><td>組み合わせ</td><td>固定</td><td>自由に積み重ね</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">実例</div>
+      <ul class="cl">
+        <li>Java I/O: BufferedInputStream(FileInputStream)</li>
+        <li>HTTP middleware のチェーン</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（コーヒー注文）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface Coffee {
+    String description();
+    int cost();
+}
+class Espresso implements Coffee {
+    public String description() { return "Espresso"; }
+    public int cost() { return 250; }
+}
+
+// 基底 Decorator
+abstract class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+    CoffeeDecorator(Coffee c) { this.coffee = c; }
+}
+
+class MilkDecorator extends CoffeeDecorator {
+    MilkDecorator(Coffee c) { super(c); }
+    public String description() {
+        return coffee.description() + " + Milk";
+    }
+    public int cost() { return coffee.cost() + 50; }
+}
+class SyrupDecorator extends CoffeeDecorator {
+    SyrupDecorator(Coffee c) { super(c); }
+    public String description() {
+        return coffee.description() + " + Syrup";
+    }
+    public int cost() { return coffee.cost() + 80; }
+}
+
+// 使用例 — 自由に積み重ね
+Coffee order = new SyrupDecorator(
+                 new MilkDecorator(
+                   new Espresso()));
+System.out.println(order.description()); // Espresso + Milk + Syrup
+System.out.println(order.cost());        // 380</pre>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Template Method — 処理の骨格定義</div>
+  <div class="s-pg">gof-21</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">処理の<strong>骨格（アルゴリズムの構造）を親クラスで定義</strong>し、一部のステップをサブクラスに委ねる。構造は変えずに、詳細だけを変化させる。</div>
+      <div class="label-sm" style="margin-bottom:6px">構成要素</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>メソッド種</th><th>内容</th></tr>
+        <tr><td>template method</td><td>骨格を定義（final推奨）</td></tr>
+        <tr><td>abstract step</td><td>サブクラスが必ず実装</td></tr>
+        <tr><td>hook</td><td>サブクラスが任意でオーバーライド</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">Strategyとの違い</div>
+      <div class="info-box" style="font-size:10px">Template Methodは継承、Strategyは委譲で変化点を実現する。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（データ処理パイプライン）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">abstract class DataProcessor {
+    // Template Method — 骨格（final）
+    public final void process(String path) {
+        String data = readData(path);    // abstract
+        String parsed = parseData(data); // abstract
+        if (shouldValidate()) {          // hook
+            validate(parsed);
+        }
+        saveData(parsed);                // abstract
+    }
+
+    protected abstract String readData(String path);
+    protected abstract String parseData(String data);
+    protected abstract void saveData(String data);
+
+    // hook — デフォルトはtrue、サブクラスで変更可
+    protected boolean shouldValidate() { return true; }
+    protected void validate(String data) {
+        System.out.println("Validating...");
+    }
+}
+
+class CSVProcessor extends DataProcessor {
+    protected String readData(String path) {
+        return "raw,csv,data"; // ファイル読み込み
+    }
+    protected String parseData(String data) {
+        return data.replace(",", "|"); // CSV→パイプ変換
+    }
+    protected void saveData(String data) {
+        System.out.println("Saved: " + data);
+    }
+}
+class FastCSVProcessor extends CSVProcessor {
+    // バリデーションをスキップ
+    protected boolean shouldValidate() { return false; }
+}
+
+// 使用例
+new CSVProcessor().process("data.csv");
+// → Validating... Saved: raw|csv|data
+new FastCSVProcessor().process("data.csv");
+// → Saved: raw|csv|data（バリデーションなし）</pre>
+    </div>
+  </div>
+</div>

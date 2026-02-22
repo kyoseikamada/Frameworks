@@ -1,0 +1,43 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#3a5a7a">Linux基礎</div>
+  <div class="s-title">ファイルシステム構造</div>
+  <div class="s-pg">linux-basics-01</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">ディレクトリ階層（FHS）</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>パス</th><th>役割</th></tr>
+        <tr><td>/</td><td>ルート — 全てのトップ</td></tr>
+        <tr><td>/bin /usr/bin</td><td>一般ユーザー向けコマンド</td></tr>
+        <tr><td>/sbin /usr/sbin</td><td>管理者向けコマンド</td></tr>
+        <tr><td>/etc</td><td>設定ファイル群</td></tr>
+        <tr><td>/var</td><td>可変データ（ログ・スプール）</td></tr>
+        <tr><td>/tmp</td><td>一時ファイル（再起動で消える）</td></tr>
+        <tr><td>/home</td><td>ユーザーホームディレクトリ</td></tr>
+        <tr><td>/root</td><td>rootユーザーのホーム</td></tr>
+        <tr><td>/proc /sys</td><td>仮想FS（カーネル情報）</td></tr>
+        <tr><td>/dev</td><td>デバイスファイル</td></tr>
+        <tr><td>/mnt /media</td><td>マウントポイント</td></tr>
+        <tr><td>/usr/local</td><td>手動インストールのソフト</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Linuxの「全てはファイル」思想</div>
+      <div class="info-box" style="margin-bottom:10px">デバイス・プロセス・ソケットも全てファイルとして抽象化される。統一的なI/Oインタフェース（open/read/write/close）で扱える。</div>
+      <div class="label-sm" style="margin-bottom:6px">ファイル種別</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>記号</th><th>種別</th><th>例</th></tr>
+        <tr><td>-</td><td>通常ファイル</td><td>text.txt, main.java</td></tr>
+        <tr><td>d</td><td>ディレクトリ</td><td>/home/user</td></tr>
+        <tr><td>l</td><td>シンボリックリンク</td><td>/usr/bin/python3</td></tr>
+        <tr><td>c</td><td>キャラクタデバイス</td><td>/dev/tty</td></tr>
+        <tr><td>b</td><td>ブロックデバイス</td><td>/dev/sda</td></tr>
+        <tr><td>p</td><td>名前付きパイプ</td><td>FIFO</td></tr>
+        <tr><td>s</td><td>ソケット</td><td>nginx.sock</td></tr>
+      </table>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><code>ls -la</code> の先頭文字で種別を確認できる</div>
+    </div>
+  </div>
+</div>

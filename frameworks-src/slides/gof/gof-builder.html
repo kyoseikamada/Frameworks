@@ -1,0 +1,72 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#c94a2c">Creational</div>
+  <div class="s-title">Builder — 複雑オブジェクトの段階的構築</div>
+  <div class="s-pg">gof-04</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">複雑なオブジェクトを<strong>段階的に構築</strong>する。同じ構築プロセスで異なる表現を生成できる。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>コンストラクタ引数が多くなりすぎる場合</li>
+        <li>省略可能なパラメータが多いオブジェクト生成</li>
+        <li>HTTPリクエスト・SQLクエリなど段階的に構成するもの</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図（概略）</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Director → Builder(interface)<br>
+        　　　　　　　　↑<br>
+        　　　　ConcreteBuilder → Product
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（Fluent Builder）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">class HttpRequest {
+    private final String method;
+    private final String url;
+    private final String body;
+    private final Map&lt;String,String&gt; headers;
+
+    private HttpRequest(Builder b) {
+        this.method  = b.method;
+        this.url     = b.url;
+        this.body    = b.body;
+        this.headers = b.headers;
+    }
+
+    static class Builder {
+        private String method = "GET";
+        private String url;
+        private String body;
+        private Map&lt;String,String&gt; headers = new HashMap&lt;&gt;();
+
+        Builder url(String url) {
+            this.url = url; return this;
+        }
+        Builder method(String m) {
+            this.method = m; return this;
+        }
+        Builder header(String k, String v) {
+            this.headers.put(k, v); return this;
+        }
+        Builder body(String body) {
+            this.body = body; return this;
+        }
+        HttpRequest build() {
+            return new HttpRequest(this);
+        }
+    }
+}
+
+// 使用例
+HttpRequest req = new HttpRequest.Builder()
+    .url("https://api.example.com/users")
+    .method("POST")
+    .header("Content-Type", "application/json")
+    .body("{\"name\":\"Alice\"}")
+    .build();</pre>
+    </div>
+  </div>
+</div>

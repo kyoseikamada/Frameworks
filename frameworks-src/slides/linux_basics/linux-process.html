@@ -1,0 +1,59 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#3a5a7a">Linux基礎</div>
+  <div class="s-title">プロセスとシグナル</div>
+  <div class="s-pg">linux-basics-03</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">プロセスの概念</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>用語</th><th>説明</th></tr>
+        <tr><td>PID</td><td>プロセスID（一意の識別子）</td></tr>
+        <tr><td>PPID</td><td>親プロセスID</td></tr>
+        <tr><td>UID/GID</td><td>実行ユーザー/グループ</td></tr>
+        <tr><td>フォアグラウンド</td><td>ターミナルに紐付いた実行</td></tr>
+        <tr><td>バックグラウンド</td><td>ターミナルから切り離して実行（&）</td></tr>
+        <tr><td>デーモン</td><td>完全に切り離されたバックグラウンドプロセス</td></tr>
+        <tr><td>ゾンビ</td><td>終了したが親が回収していないプロセス</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">主要シグナル</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>番号</th><th>名前</th><th>意味</th></tr>
+        <tr><td>1</td><td>SIGHUP</td><td>設定再読み込み（nginxなど）</td></tr>
+        <tr><td>2</td><td>SIGINT</td><td>Ctrl+C（割り込み）</td></tr>
+        <tr><td>9</td><td>SIGKILL</td><td>強制終了（キャッチ不可）</td></tr>
+        <tr><td>15</td><td>SIGTERM</td><td>正常終了要求（デフォルト）</td></tr>
+        <tr><td>19</td><td>SIGSTOP</td><td>一時停止（キャッチ不可）</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">プロセス操作コマンド</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># プロセス一覧
+ps aux
+ps -ef --forest  # ツリー表示
+
+# リアルタイム監視
+top
+htop             # 色付きで見やすい
+
+# シグナル送信
+kill 1234         # SIGTERM（正常終了）
+kill -9 1234      # SIGKILL（強制終了）
+kill -HUP 1234    # SIGHUP（設定再読込）
+pkill nginx       # 名前でkill
+killall java      # 同名全プロセスkill
+
+# バックグラウンド実行
+./script.sh &
+nohup ./script.sh &  # ログアウト後も継続
+
+# ジョブ管理
+jobs              # ジョブ一覧
+fg %1             # フォアグラウンドに戻す
+bg %1             # バックグラウンドで再開
+Ctrl+Z            # 一時停止</pre>
+      <div class="info-box" style="font-size:10px;margin-top:8px">kill -9 は後処理（ファイルクローズ・ロック解放）なしで強制終了するため、最終手段として使う。まず kill（SIGTERM）を試すこと。</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2a4a6a">Linuxコマンド</div>
+  <div class="s-title">プロセス確認・停止</div>
+  <div class="s-pg">linux-cmd-04</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">動いているプロセスを確認する</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 全プロセスを一覧表示
+ps aux
+# USER: 実行ユーザー  PID: プロセスID
+# %CPU: CPU使用率  %MEM: メモリ使用率
+
+# 特定のプロセスを探す
+ps aux | grep java
+ps aux | grep nginx
+
+# リアルタイムで監視する（q で終了）
+top
+# CPU・メモリの使用率が高いものを確認できる</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:10px">プロセスを停止する</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># PIDを指定して終了（正常終了）
+kill 1234
+
+# 強制終了（フリーズして応答しないとき）
+kill -9 1234
+
+# プロセス名で終了
+pkill nginx</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:8px">サービスの起動・停止（systemctl）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># サービスの状態を確認
+systemctl status nginx
+
+# 起動・停止・再起動
+sudo systemctl start nginx
+sudo systemctl stop nginx
+sudo systemctl restart nginx
+
+# OS起動時に自動で起動するように設定
+sudo systemctl enable nginx
+
+# 自動起動を無効にする
+sudo systemctl disable nginx
+
+# ログを確認する
+journalctl -u nginx
+journalctl -u nginx -f    # リアルタイム</pre>
+      <div class="label-sm" style="margin-bottom:8px;margin-top:6px">ポートの確認</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0"># 何番ポートで待ち受けているか確認
+ss -tuln
+# 80番ポートを使っているプロセスを探す
+ss -tuln | grep :80</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px"><strong>PIDの調べ方：</strong><code>ps aux | grep nginx</code> の2列目がPID。または <code>pgrep nginx</code> で直接取得できる。</div>
+    </div>
+  </div>
+</div>

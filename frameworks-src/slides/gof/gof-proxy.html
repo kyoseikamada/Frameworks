@@ -1,0 +1,61 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Proxy — 代理アクセス</div>
+  <div class="s-pg">gof-12</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">別オブジェクトへの<strong>代理（プレースホルダー）</strong>を提供し、そのオブジェクトへのアクセスを制御する。</div>
+      <div class="label-sm" style="margin-bottom:6px">主な用途</div>
+      <div class="g2" style="gap:6px;margin-bottom:8px">
+        <div class="card" style="padding:8px"><div class="card-name" style="font-size:9px">Virtual Proxy</div><div class="card-desc">遅延初期化。重いオブジェクトを必要になるまで生成しない</div></div>
+        <div class="card" style="padding:8px"><div class="card-name" style="font-size:9px">Protection Proxy</div><div class="card-desc">アクセス制御。権限チェックを挟む</div></div>
+        <div class="card" style="padding:8px"><div class="card-name" style="font-size:9px">Caching Proxy</div><div class="card-desc">結果をキャッシュして重複処理を省く</div></div>
+        <div class="card" style="padding:8px"><div class="card-name" style="font-size:9px">Remote Proxy</div><div class="card-desc">ネットワーク越しのオブジェクトを透過的に操作</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（Caching Proxy）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface DataService {
+    String fetchData(String query);
+}
+
+// 実際のサービス（重い処理）
+class RealDataService implements DataService {
+    public String fetchData(String query) {
+        System.out.println("DB query: " + query);
+        return "result:" + query; // 実際はDB呼び出し
+    }
+}
+
+// Caching Proxy
+class CachedDataService implements DataService {
+    private final DataService real;
+    private final Map&lt;String, String&gt; cache
+        = new HashMap&lt;&gt;();
+
+    CachedDataService(DataService real) {
+        this.real = real;
+    }
+
+    public String fetchData(String query) {
+        if (cache.containsKey(query)) {
+            System.out.println("Cache hit: " + query);
+            return cache.get(query);
+        }
+        String result = real.fetchData(query);
+        cache.put(query, result);
+        return result;
+    }
+}
+
+// 使用例
+DataService svc = new CachedDataService(
+                      new RealDataService());
+svc.fetchData("users"); // DB query
+svc.fetchData("users"); // Cache hit</pre>
+    </div>
+  </div>
+</div>

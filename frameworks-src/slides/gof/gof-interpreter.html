@@ -1,0 +1,67 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Interpreter — 文法の解釈</div>
+  <div class="s-pg">gof-23</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">言語の<strong>文法を定義し、その言語の文を解釈するインタプリタを提供</strong>する。文をASTで表現し、再帰的に評価する。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>SQLパーサー・正規表現エンジン</li>
+        <li>数式計算・条件式の評価</li>
+        <li>設定ファイルの独自DSL</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">注意</div>
+      <div class="info-box" style="font-size:10px">文法が複雑になるとクラス数が膨大になる。複雑な言語にはANTLRなどのパーサーツールを使うべき。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（四則演算インタプリタ）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// AbstractExpression
+interface Expression {
+    int interpret();
+}
+
+// Terminal — 数値リテラル
+class NumberExpr implements Expression {
+    private int value;
+    NumberExpr(int v) { this.value = v; }
+    public int interpret() { return value; }
+}
+
+// NonTerminal — 加算
+class AddExpr implements Expression {
+    private Expression left, right;
+    AddExpr(Expression l, Expression r) {
+        left = l; right = r;
+    }
+    public int interpret() {
+        return left.interpret() + right.interpret();
+    }
+}
+
+// NonTerminal — 乗算
+class MulExpr implements Expression {
+    private Expression left, right;
+    MulExpr(Expression l, Expression r) {
+        left = l; right = r;
+    }
+    public int interpret() {
+        return left.interpret() * right.interpret();
+    }
+}
+
+// 使用例: (3 + 5) * 2 = 16
+Expression expr = new MulExpr(
+    new AddExpr(
+        new NumberExpr(3),
+        new NumberExpr(5)
+    ),
+    new NumberExpr(2)
+);
+System.out.println(expr.interpret()); // 16</pre>
+    </div>
+  </div>
+</div>

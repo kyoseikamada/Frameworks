@@ -1,0 +1,54 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#3a5a7a">Linux基礎</div>
+  <div class="s-title">パーミッションと所有権</div>
+  <div class="s-pg">linux-basics-02</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">パーミッションの読み方</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:11px;font-family:'Space Mono',monospace;line-height:1.8">-rwxr-xr--  1 alice dev  1024 Jan 1 12:00 script.sh
+│└──┘└──┘└──┘
+│ u   g   o     u=所有者 g=グループ o=その他
+│
+ファイル種別（- d l ...）
+
+r = 読み取り (4)
+w = 書き込み (2)
+x = 実行     (1)</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">数値表現（8進数）</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>数値</th><th>rwx</th><th>意味</th></tr>
+        <tr><td>7</td><td>rwx</td><td>全権限</td></tr>
+        <tr><td>6</td><td>rw-</td><td>読み書き</td></tr>
+        <tr><td>5</td><td>r-x</td><td>読み・実行</td></tr>
+        <tr><td>4</td><td>r--</td><td>読み取り専用</td></tr>
+        <tr><td>0</td><td>---</td><td>権限なし</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">よく使うパーミッション設定</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># 実行権限を付与
+chmod +x script.sh
+chmod 755 script.sh   # rwxr-xr-x
+
+# Webコンテンツ（読み取り専用）
+chmod 644 index.html  # rw-r--r--
+
+# 秘密鍵（自分だけ）
+chmod 600 ~/.ssh/id_rsa  # rw-------
+
+# 所有者変更
+chown alice:dev file.txt
+chown -R www-data /var/www  # 再帰的に</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">特殊パーミッション</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>種別</th><th>効果</th><th>設定</th></tr>
+        <tr><td>SUID</td><td>実行時に所有者権限で動く（passwdコマンドなど）</td><td>chmod u+s</td></tr>
+        <tr><td>SGID</td><td>実行時にグループ権限で動く</td><td>chmod g+s</td></tr>
+        <tr><td>Sticky</td><td>/tmpなど他人のファイルを削除不可</td><td>chmod +t</td></tr>
+      </table>
+      <div class="info-box" style="margin-top:8px;font-size:10px">umask: ファイル生成時のデフォルトパーミッションマスク。<code>umask 022</code>でファイルは644、ディレクトリは755になる。</div>
+    </div>
+  </div>
+</div>

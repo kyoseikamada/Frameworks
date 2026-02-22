@@ -1,0 +1,59 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Facade — シンプルな窓口</div>
+  <div class="s-pg">gof-10</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">複雑なサブシステムに対して<strong>シンプルなインタフェース（窓口）を提供</strong>する。クライアントをサブシステムの複雑さから隔離する。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>複数の複雑なライブラリをまとめて使う場合</li>
+        <li>レイヤードアーキテクチャのサービス層</li>
+        <li>サードパーティAPIのラッパー</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">クラス図</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Client → Facade<br>
+        　　　　　　↓<br>
+        　　SubsystemA SubsystemB SubsystemC
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（動画変換）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// 複雑なサブシステム群
+class VideoDecoder {
+    VideoFile decode(String path) { /*...*/ return new VideoFile(); }
+}
+class AudioMixer { void mix(VideoFile v) { /*...*/ } }
+class Encoder {
+    void encode(VideoFile v, String fmt) { /*...*/ }
+}
+class BitrateReader {
+    void adjust(VideoFile v) { /*...*/ }
+}
+
+// Facade — 複雑な操作を1メソッドに隠蔽
+class VideoConverter {
+    private VideoDecoder decoder = new VideoDecoder();
+    private AudioMixer   mixer   = new AudioMixer();
+    private Encoder      encoder = new Encoder();
+    private BitrateReader reader = new BitrateReader();
+
+    public void convert(String inputPath, String format) {
+        VideoFile video = decoder.decode(inputPath);
+        mixer.mix(video);
+        reader.adjust(video);
+        encoder.encode(video, format);
+        System.out.println("変換完了: " + format);
+    }
+}
+
+// 使用例 — クライアントはFacadeだけ知ればよい
+VideoConverter converter = new VideoConverter();
+converter.convert("movie.mp4", "avi");</pre>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Strategy — アルゴリズムの交換</div>
+  <div class="s-pg">gof-20</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">アルゴリズムのファミリーを定義し、それぞれをカプセル化して<strong>互いに交換可能</strong>にする。クライアントとは独立してアルゴリズムを変化できる。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl" style="margin-bottom:10px">
+        <li>ソートアルゴリズムの切り替え</li>
+        <li>決済方法（クレカ・PayPay・銀行振込）</li>
+        <li>圧縮方式・暗号化アルゴリズムの選択</li>
+      </ul>
+      <div class="label-sm" style="margin-bottom:6px">OCP（開放閉鎖原則）との関係</div>
+      <div class="info-box" style="font-size:10px">新しいアルゴリズムを追加するとき、既存コードを修正せず新Strategyクラスを追加するだけでよい。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（決済戦略）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface PaymentStrategy {
+    void pay(int amount);
+}
+
+class CreditCard implements PaymentStrategy {
+    private String number;
+    CreditCard(String number) { this.number = number; }
+    public void pay(int amount) {
+        System.out.printf("Credit %s: ¥%d%n",
+                           number, amount);
+    }
+}
+class PayPay implements PaymentStrategy {
+    private String id;
+    PayPay(String id) { this.id = id; }
+    public void pay(int amount) {
+        System.out.printf("PayPay %s: ¥%d%n",
+                           id, amount);
+    }
+}
+
+class ShoppingCart {
+    private List&lt;Integer&gt; items = new ArrayList&lt;&gt;();
+    private PaymentStrategy strategy;
+
+    void setPayment(PaymentStrategy s) {
+        this.strategy = s;
+    }
+    void add(int price) { items.add(price); }
+    void checkout() {
+        int total = items.stream()
+                         .mapToInt(Integer::intValue).sum();
+        strategy.pay(total);
+    }
+}
+
+// 使用例
+ShoppingCart cart = new ShoppingCart();
+cart.add(1000); cart.add(2500);
+
+cart.setPayment(new CreditCard("4111-xxxx"));
+cart.checkout(); // Credit 4111-xxxx: ¥3500
+
+cart.setPayment(new PayPay("user@example.com"));
+cart.checkout(); // PayPay user@example.com: ¥3500</pre>
+    </div>
+  </div>
+</div>

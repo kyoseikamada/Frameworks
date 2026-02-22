@@ -1,0 +1,71 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#2d7a4a">Behavioral</div>
+  <div class="s-title">Visitor — 処理の外部化</div>
+  <div class="s-pg">gof-22</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">オブジェクト構造の要素に対して行う<strong>操作をVisitorクラスに分離</strong>する。構造を変えずに新しい操作を追加できる。</div>
+      <div class="label-sm" style="margin-bottom:6px">Double Dispatch</div>
+      <div class="info-box" style="margin-bottom:10px">element.accept(visitor) → visitor.visit(this) という二段階の動的ディスパッチで、要素の型と訪問者の型の両方に応じた処理を選択する。</div>
+      <div class="label-sm" style="margin-bottom:6px">使いどころ</div>
+      <ul class="cl">
+        <li>ASTへの複数の操作（型検査・コード生成）</li>
+        <li>構造は安定していて、操作だけを増やしたい場合</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例（図形の面積・周囲計算）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">interface ShapeVisitor {
+    void visit(Circle c);
+    void visit(Rectangle r);
+}
+
+interface Shape {
+    void accept(ShapeVisitor v);
+}
+class Circle implements Shape {
+    double radius;
+    Circle(double r) { this.radius = r; }
+    public void accept(ShapeVisitor v) { v.visit(this); }
+}
+class Rectangle implements Shape {
+    double w, h;
+    Rectangle(double w, double h) {
+        this.w = w; this.h = h;
+    }
+    public void accept(ShapeVisitor v) { v.visit(this); }
+}
+
+// 新しい操作はVisitorを追加するだけ
+class AreaVisitor implements ShapeVisitor {
+    public void visit(Circle c) {
+        System.out.printf("Circle area: %.2f%n",
+                           Math.PI * c.radius * c.radius);
+    }
+    public void visit(Rectangle r) {
+        System.out.printf("Rect area: %.2f%n", r.w * r.h);
+    }
+}
+class PerimeterVisitor implements ShapeVisitor {
+    public void visit(Circle c) {
+        System.out.printf("Circle perimeter: %.2f%n",
+                           2 * Math.PI * c.radius);
+    }
+    public void visit(Rectangle r) {
+        System.out.printf("Rect perimeter: %.2f%n",
+                           2 * (r.w + r.h));
+    }
+}
+
+// 使用例
+List&lt;Shape&gt; shapes = List.of(
+    new Circle(5), new Rectangle(4, 6));
+
+ShapeVisitor area = new AreaVisitor();
+shapes.forEach(s -> s.accept(area));</pre>
+    </div>
+  </div>
+</div>

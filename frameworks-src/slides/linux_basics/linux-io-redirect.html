@@ -1,0 +1,58 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#3a5a7a">Linux基礎</div>
+  <div class="s-title">入出力・リダイレクト・パイプ</div>
+  <div class="s-pg">linux-basics-06</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">標準入出力</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>名称</th><th>FD</th><th>デフォルト</th></tr>
+        <tr><td>標準入力 (stdin)</td><td>0</td><td>キーボード</td></tr>
+        <tr><td>標準出力 (stdout)</td><td>1</td><td>ターミナル</td></tr>
+        <tr><td>標準エラー出力 (stderr)</td><td>2</td><td>ターミナル</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">リダイレクト記号</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>記号</th><th>意味</th></tr>
+        <tr><td>&gt; file</td><td>stdout → ファイル（上書き）</td></tr>
+        <tr><td>&gt;&gt; file</td><td>stdout → ファイル（追記）</td></tr>
+        <tr><td>2&gt; file</td><td>stderr → ファイル</td></tr>
+        <tr><td>2&gt;&amp;1</td><td>stderrをstdoutに合流</td></tr>
+        <tr><td>&amp;&gt; file</td><td>stdout+stderr → ファイル</td></tr>
+        <tr><td>&lt; file</td><td>ファイル → stdin</td></tr>
+        <tr><td>&lt;&lt;EOF</td><td>ヒアドキュメント</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">実例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">ls -la &gt; list.txt
+echo "append" &gt;&gt; log.txt
+
+# stderr を捨てる
+find / -name "*.conf" 2&gt;/dev/null
+
+# stdout+stderr をまとめて保存
+./app.sh &amp;&gt; output.log
+
+# パイプ
+cat /etc/passwd | grep alice
+ls -la | sort -k5 -n | tail -10
+ps aux | grep java | grep -v grep
+
+# コマンド置換
+TODAY=$(date +%Y%m%d)
+echo "Today is $TODAY"
+
+# tee: ファイルに保存しつつ画面にも出力
+make 2&gt;&amp;1 | tee build.log
+
+# xargs: stdoutを引数として渡す
+find . -name "*.log" | xargs gzip
+
+# プロセス置換
+diff &lt;(sort file1.txt) &lt;(sort file2.txt)</pre>
+    </div>
+  </div>
+</div>

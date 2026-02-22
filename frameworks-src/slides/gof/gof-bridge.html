@@ -1,0 +1,64 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a4a7a">Structural</div>
+  <div class="s-title">Bridge — 実装と抽象の分離</div>
+  <div class="s-pg">gof-07</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">意図</div>
+      <div class="info-box" style="margin-bottom:10px">抽象部分と実装部分を<strong>独立して変化できるよう橋渡しする</strong>。継承ではなく委譲で両者を繋ぐ。</div>
+      <div class="label-sm" style="margin-bottom:6px">問題：継承の爆発</div>
+      <div style="background:#fdf0ee;padding:10px;font-size:10px;line-height:1.8;margin-bottom:8px">
+        Shape × Color で継承すると…<br>
+        RedCircle / BlueCircle / RedSquare / BlueSquare …<br>
+        → クラス数が掛け算で増える
+      </div>
+      <div class="label-sm" style="margin-bottom:6px">Bridge の解決</div>
+      <div style="background:#fff;border:1px solid var(--line);padding:10px;font-family:'Space Mono',monospace;font-size:10px;line-height:1.8">
+        Shape(抽象) →has-a→ Color(実装)<br>
+        Circle / Square　　Red / Blue<br>
+        → 組み合わせは委譲で解決
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:14px;font-size:10px;line-height:1.7;overflow-x:auto;font-family:'Space Mono',monospace">// 実装側
+interface Renderer {
+    void renderCircle(double radius);
+}
+class VectorRenderer implements Renderer {
+    public void renderCircle(double r) {
+        System.out.println("Vector circle r=" + r);
+    }
+}
+class RasterRenderer implements Renderer {
+    public void renderCircle(double r) {
+        System.out.println("Raster circle r=" + r);
+    }
+}
+
+// 抽象側
+abstract class Shape {
+    protected Renderer renderer; // Bridge
+    Shape(Renderer r) { this.renderer = r; }
+    abstract void draw();
+}
+class Circle extends Shape {
+    private double radius;
+    Circle(Renderer r, double radius) {
+        super(r);
+        this.radius = radius;
+    }
+    public void draw() {
+        renderer.renderCircle(radius);
+    }
+}
+
+// 使用例 — 組み合わせは自由
+Shape c1 = new Circle(new VectorRenderer(), 5);
+Shape c2 = new Circle(new RasterRenderer(), 5);
+c1.draw(); c2.draw();</pre>
+    </div>
+  </div>
+</div>
