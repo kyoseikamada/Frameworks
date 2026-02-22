@@ -1,0 +1,20 @@
+<div class="s-header">
+      <div class="s-tag" style="background:#c94a2c">システム開発</div>
+      <div class="s-title">非機能要件 — FURPS+</div>
+      <div class="s-pg">sys-02</div>
+    </div>
+    <div class="s-body">
+      <div class="label-sm" style="margin-bottom:10px">非機能要件を漏れなく洗い出すための分類フレームワーク（HP 社が提唱）</div>
+      <table class="tbl">
+        <tr><th>区分</th><th>内容</th><th>主な指標・チェック項目</th></tr>
+        <tr><td>F — Functionality</td><td>機能性・セキュリティ</td><td>機能要件の網羅性、認可・監査ログ</td></tr>
+        <tr><td>U — Usability</td><td>使いやすさ</td><td>操作ステップ数、エラー回復、アクセシビリティ（WCAG）</td></tr>
+        <tr><td>R — Reliability</td><td>信頼性・可用性</td><td>MTBF / MTTR / SLA (99.9%など) / RTO・RPO</td></tr>
+        <tr><td>P — Performance</td><td>性能・効率性</td><td>レスポンス ≤ 2秒 / スループット / CPU・メモリ上限</td></tr>
+        <tr><td>S — Supportability</td><td>保守性・移植性</td><td>ログ・監視設計、デプロイ自動化、環境差異の排除</td></tr>
+        <tr><td>+ Design</td><td>設計制約</td><td>使用言語・FW・OS・DB 制約</td></tr>
+        <tr><td>+ Implementation</td><td>実装制約</td><td>コーディング規約、ライセンス制約</td></tr>
+        <tr><td>+ Interface</td><td>外部 I/F 制約</td><td>外部 API・レガシー連携仕様</td></tr>
+        <tr><td>+ Physical</td><td>物理制約</td><td>ハードウェア仕様、設置場所・電源要件</td></tr>
+      </table>
+    </div>

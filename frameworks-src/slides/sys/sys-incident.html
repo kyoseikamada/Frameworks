@@ -1,0 +1,35 @@
+<div class="s-header">
+      <div class="s-tag" style="background:#c94a2c">システム開発</div>
+      <div class="s-title">インシデント管理 ＆ SRE の観点</div>
+      <div class="s-pg">sys-07</div>
+    </div>
+    <div class="s-body">
+      <div class="two-col">
+        <div>
+          <div class="label-sm" style="margin-bottom:8px">インシデント対応フロー（ITIL ベース）</div>
+          <div class="step-flow" style="margin-bottom:12px">
+            <div class="step-item"><div class="step-num" style="background:#c94a2c">1</div><div class="step-body"><strong>検知</strong> — 監視アラート・ユーザー報告</div></div>
+            <div class="step-item"><div class="step-num" style="background:#c94a2c">2</div><div class="step-body"><strong>初動・トリアージ</strong> — 影響範囲・優先度判定</div></div>
+            <div class="step-item"><div class="step-num" style="background:#c94a2c">3</div><div class="step-body"><strong>エスカレーション</strong> — インシデントコマンダー指名</div></div>
+            <div class="step-item"><div class="step-num" style="background:#c94a2c">4</div><div class="step-body"><strong>緩和・復旧</strong> — ロールバック / フェイルオーバー</div></div>
+            <div class="step-item"><div class="step-num" style="background:#2d7a4a">5</div><div class="step-body"><strong>ポストモーテム</strong> — 根本原因・再発防止策（非 blame）</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="label-sm" style="margin-bottom:8px">SRE（Site Reliability Engineering）の主要指標</div>
+          <table class="tbl" style="font-size:10px;margin-bottom:8px">
+            <tr><th>指標</th><th>概要</th></tr>
+            <tr><td>SLA</td><td>顧客と合意した可用性・性能の最低保証水準</td></tr>
+            <tr><td>SLO</td><td>SLA 達成のための内部目標値（SLA より厳しく設定）</td></tr>
+            <tr><td>SLI</td><td>SLO 計測に使うメトリクス（レイテンシ・成功率等）</td></tr>
+            <tr><td>Error Budget</td><td>許容エラー率の残高。消化率で開発速度を調整する。</td></tr>
+            <tr><td>MTTR</td><td>Mean Time To Recovery：平均復旧時間</td></tr>
+            <tr><td>MTBF</td><td>Mean Time Between Failures：平均障害間隔</td></tr>
+          </table>
+          <div class="info-box" style="font-size:10px">
+            <strong>技術的負債の管理：</strong>
+            新規開発 vs リファクタリングの比率（例：80:20）をチームで合意し、スプリントに定期的に組み込む。負債の可視化には「アーキテクチャ決定記録（ADR）」が有効。
+          </div>
+        </div>
+      </div>
+    </div>

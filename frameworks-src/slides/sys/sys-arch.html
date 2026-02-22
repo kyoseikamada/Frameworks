@@ -1,0 +1,47 @@
+<div class="s-header">
+      <div class="s-tag" style="background:#c94a2c">システム開発</div>
+      <div class="s-title">アーキテクチャパターン</div>
+      <div class="s-pg">sys-04</div>
+    </div>
+    <div class="s-body">
+      <div class="g3" style="margin-bottom:10px">
+        <div class="card">
+          <div class="card-bar" style="background:#c94a2c"></div>
+          <div class="card-name">レイヤードアーキテクチャ</div>
+          <div class="card-desc">プレゼン→アプリ→ドメイン→インフラの階層。依存は上から下の一方向。変更箇所が明確。</div>
+          <div class="card-tags"><span class="tag">伝統的</span><span class="tag">明快</span></div>
+        </div>
+        <div class="card">
+          <div class="card-bar" style="background:#c94a2c"></div>
+          <div class="card-name">クリーンアーキテクチャ</div>
+          <div class="card-desc">ドメイン層を中心に依存性逆転。フレームワーク・DB・UIを外側に置き、テスト容易性を高める。</div>
+          <div class="card-tags"><span class="tag">DIP</span><span class="tag">テスタブル</span></div>
+        </div>
+        <div class="card">
+          <div class="card-bar" style="background:#c94a2c"></div>
+          <div class="card-name">マイクロサービス</div>
+          <div class="card-desc">機能をサービス単位に分割し独立デプロイ。スケーラブルだが分散システムの複雑さに注意。</div>
+          <div class="card-tags"><span class="tag">スケール</span><span class="tag">独立性</span></div>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="card">
+          <div class="card-bar" style="background:#1a4a7a"></div>
+          <div class="card-name">イベント駆動（EDA）</div>
+          <div class="card-desc">コンポーネント間をイベントバスで疎結合。Kafka / SQS 等。非同期処理・スケーラビリティに優れる。</div>
+          <div class="card-tags"><span class="tag">非同期</span><span class="tag">疎結合</span></div>
+        </div>
+        <div class="card">
+          <div class="card-bar" style="background:#1a4a7a"></div>
+          <div class="card-name">CQRS ＋ Event Sourcing</div>
+          <div class="card-desc">Command（書込）とQuery（読込）を分離。Event Sourcing で状態変化を全履歴として保持。</div>
+          <div class="card-tags"><span class="tag">監査</span><span class="tag">スケール</span></div>
+        </div>
+        <div class="card">
+          <div class="card-bar" style="background:#1a4a7a"></div>
+          <div class="card-name">サーバーレス / BFF</div>
+          <div class="card-desc">Lambda 等で運用負荷を削減。BFF（Backend For Frontend）でクライアント最適の API を提供。</div>
+          <div class="card-tags"><span class="tag">運用軽減</span><span class="tag">UX最適化</span></div>
+        </div>
+      </div>
+    </div>

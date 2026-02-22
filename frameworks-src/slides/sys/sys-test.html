@@ -1,0 +1,44 @@
+<div class="s-header">
+      <div class="s-tag" style="background:#c94a2c">システム開発</div>
+      <div class="s-title">テスト戦略ピラミッド</div>
+      <div class="s-pg">sys-05</div>
+    </div>
+    <div class="s-body">
+      <div class="two-col">
+        <div>
+          <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:10px">
+            <div style="width:58%;padding:10px;background:#fdf0ee;border:1px solid var(--line);text-align:center;font-size:10px">
+              <strong>E2E テスト</strong><br>
+              <span style="font-size:9px;color:var(--muted)">少量・低速・高コスト<br>Cypress / Playwright</span>
+            </div>
+            <div style="width:76%;padding:10px;background:#fdf6e8;border:1px solid var(--line);text-align:center;font-size:10px;margin-top:-1px">
+              <strong>統合テスト</strong><br>
+              <span style="font-size:9px;color:var(--muted)">中量・API/DB 結合確認</span>
+            </div>
+            <div style="width:94%;padding:10px;background:#e8f4ec;border:1px solid var(--line);text-align:center;font-size:10px;margin-top:-1px">
+              <strong>ユニットテスト</strong><br>
+              <span style="font-size:9px;color:var(--muted)">多量・高速・安価 / Jest / pytest / JUnit</span>
+            </div>
+          </div>
+          <div class="info-box" style="font-size:10px">
+            <strong>テストトロフィー（Kent C. Dodds）</strong><br>
+            静的解析 → ユニット → 統合 → E2E の比率で<strong>統合テストを最重視</strong>するモデル。
+          </div>
+        </div>
+        <div>
+          <div class="label-sm" style="margin-bottom:8px">テスト設計・手法</div>
+          <table class="tbl" style="font-size:10px;margin-bottom:8px">
+            <tr><th>手法</th><th>概要</th></tr>
+            <tr><td>TDD</td><td>テストを先に書いてから実装（Red → Green → Refactor）</td></tr>
+            <tr><td>BDD</td><td>Given/When/Then で振る舞いを仕様として記述</td></tr>
+            <tr><td>モック・スタブ</td><td>外部依存を差し替えて単体テストを独立化</td></tr>
+            <tr><td>プロパティテスト</td><td>ランダム値を大量入力し不変条件を検証</td></tr>
+            <tr><td>カオスエンジニアリング</td><td>本番で意図的に障害注入し耐障害性を検証</td></tr>
+          </table>
+          <div class="card" style="padding:10px">
+            <div class="card-name" style="font-size:10px">CI/CD パイプライン観点</div>
+            <div class="card-desc">Lint → Build → Unit → Integration → Deploy(Staging) → E2E → Deploy(Prod)。フィードバックループを短く保つ。</div>
+          </div>
+        </div>
+      </div>
+    </div>
