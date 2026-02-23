@@ -208,6 +208,9 @@ function goTo(idx) {
   const el = document.getElementById('slide-' + idx);
   if (el) el.classList.add('active');
   current = idx;
+  // スライド切替時に #stage のスクロールをトップに戻す
+  const stage = document.getElementById('stage');
+  if (stage) stage.scrollTop = 0;
   syncUI();
 }
 
@@ -218,8 +221,11 @@ function goToByPos(pos) {
 function spGoTo(idx) {
   spCurrentIdx = idx;
   closeSidebar();
-  const el = document.getElementById('slide-' + idx);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // サイドバーのCSS transitionが終わってからスクロールする（transition: 0.25s）
+  setTimeout(() => {
+    const el = document.getElementById('slide-' + idx);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 320);
   syncSpNav();
 }
 

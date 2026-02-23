@@ -124,11 +124,16 @@ body {
    STAGE
    ============================================================ */
 #stage-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-#stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; overflow: hidden; }
+#stage { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; overflow-x: hidden; }
 .slide-frame {
-  width: 100%; max-width: 960px; aspect-ratio: 16 / 10;
-  background: var(--paper); position: relative; overflow: hidden;
+  width: 100%; max-width: 960px;
+  /* aspect-ratioは最小高さとして機能させ、コンテンツが多い場合は伸ばす */
+  min-height: calc((100vw - var(--sidebar-w) - 48px) * 10 / 16);
+  max-height: none;
+  background: var(--paper); position: relative; overflow: visible;
   box-shadow: 0 8px 48px rgba(0,0,0,.5);
+  flex-shrink: 0;
+  margin: auto;
 }
 #slide-nav { height: 48px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-shrink: 0; padding-bottom: 8px; }
 .snav-btn {
@@ -142,12 +147,20 @@ body {
 .pdot { width: 5px; height: 5px; border-radius: 50%; background: #333; cursor: pointer; transition: all .15s; }
 .pdot.active { background: var(--paper); transform: scale(1.3); }
 
+/* preタグのコードブロック — 横スクロール対応 */
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  word-wrap: normal;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* ============================================================
    SLIDE BASE
    ============================================================ */
 .slide {
-  display: none; position: absolute; inset: 0;
-  width: 100%; height: 100%; background: var(--paper); overflow: hidden;
+  display: none;
+  width: 100%; background: var(--paper); overflow: visible;
 }
 .slide.active { display: block; animation: fadeSlide .2s ease; }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
