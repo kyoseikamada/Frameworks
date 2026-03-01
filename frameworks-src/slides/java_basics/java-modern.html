@@ -1,0 +1,68 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">モダン Java — Stream / Lambda / 新構文</div>
+  <div class="s-pg">java-basics-07</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Stream API（Java 8+）</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">List<String> names =
+    List.of("Alice","Bob","Charlie","Dave");
+
+// 中間操作（遅延評価）→ 終端操作
+List<String> result = names.stream()
+    .filter(n -> n.length() > 3)    // 絞り込み
+    .map(String::toUpperCase)        // 変換
+    .sorted()                        // ソート
+    .collect(Collectors.toList());   // 収集
+
+// 集計
+long count = names.stream()
+    .filter(n -> n.startsWith("A"))
+    .count();
+
+// groupingBy
+Map<Integer, List<String>> byLen =
+    names.stream().collect(
+        Collectors.groupingBy(String::length));
+
+// 並列（大量データ向け）
+names.parallelStream()
+    .map(this::heavyProcess)
+    .collect(Collectors.toList());</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 9〜21 の主要新構文</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">// Optional（null 安全）Java 8+
+Optional.ofNullable(user)
+    .map(User::getEmail)
+    .orElse("unknown@example.com");
+
+// var（型推論）Java 10+
+var list = new ArrayList<String>();
+
+// Record（不変データクラス）Java 16+
+record Point(int x, int y) {}
+var p = new Point(1, 2); // p.x(), p.y()
+
+// Sealed class Java 17+
+sealed interface Shape
+    permits Circle, Rectangle {}
+
+// Pattern Matching + switch Java 21+
+double area = switch (shape) {
+    case Circle c    -> Math.PI * c.r() * c.r();
+    case Rectangle r -> r.w() * r.h();
+};
+
+// Text Block Java 15+
+String json = """
+    { "name": "Alice",
+      "age": 30 }
+    """;</pre>
+      <div class="label-sm" style="margin-bottom:4px;margin-top:6px">モジュールシステム（JPMS）Java 9+</div>
+      <div class="info-box" style="font-size:10px"><code>module-info.java</code> でモジュール間依存と公開 API を宣言。クラスパス地獄の解消とカプセル化の強化が目的。</div>
+    </div>
+  </div>
+</div>

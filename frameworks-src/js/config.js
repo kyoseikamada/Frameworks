@@ -20,7 +20,9 @@ export const CATEGORIES = {
   knowhow:      { name: 'ノウハウ',            color: '#4a7a7a', order: 6 },
   gof:          { name: 'GoFデザインパターン', color: '#7a3a6a', order: 7 },
   linux_basics: { name: 'Linux基礎',           color: '#3a5a7a', order: 8 },
-  linux_cmd:    { name: 'Linuxコマンド',       color: '#2a4a6a', order: 9 },
+  linux_cmd:    { name: 'Linuxコマンド',       color: '#2a4a6a', order: 9  },
+  java_basics:  { name: 'Java基礎',            color: '#b06000', order: 10 },
+  java_ee:      { name: 'Jakarta EE',          color: '#1a6a4a', order: 11 },
 };
 
 export const SLIDES = [
@@ -117,5 +119,24 @@ export const SLIDES = [
   { id: 'linux-cmd-process',     cat: 'linux_cmd', title: 'プロセス・システム監視',      tags: ['ps', 'top', 'systemctl'] },
   { id: 'linux-cmd-network',     cat: 'linux_cmd', title: 'ネットワーク・SSH',           tags: ['ssh', 'curl', 'rsync', 'ss'] },
   { id: 'linux-cmd-archive',     cat: 'linux_cmd', title: 'アーカイブ・パッケージ管理',  tags: ['tar', 'apt', 'dnf'] },
+
+  // ---- ⑩ Java 基礎 ----
+  { id: 'div-java-basics',    cat: 'java_basics', title: '⑩ Java基礎',                    tags: [], divider: true },
+  { id: 'java-jvm',           cat: 'java_basics', title: 'JVM の構造と実行の流れ',         tags: ['JVM', 'Heap', 'Bytecode'] },
+  { id: 'java-classloader',   cat: 'java_basics', title: 'クラスローダーの仕組み',          tags: ['ClassLoader', '親委譲'] },
+  { id: 'java-gc',            cat: 'java_basics', title: 'ガベージコレクション',            tags: ['GC', 'G1GC', 'ZGC'] },
+  { id: 'java-jit',           cat: 'java_basics', title: 'JIT コンパイルとパフォーマンス', tags: ['JIT', 'HotSpot', 'GraalVM'] },
+  { id: 'java-thread',        cat: 'java_basics', title: 'スレッドと並行処理',              tags: ['Thread', 'CompletableFuture', 'VirtualThread'] },
+  { id: 'java-memory-model',  cat: 'java_basics', title: 'メモリモデルと型システム・例外', tags: ['JMM', 'happens-before', '例外'] },
+  { id: 'java-modern',        cat: 'java_basics', title: 'モダン Java — Stream / Lambda', tags: ['Stream', 'Lambda', 'Record', 'JPMS'] },
+
+  // ---- ⑪ Jakarta EE ----
+  { id: 'div-java-ee',        cat: 'java_ee', title: '⑪ Jakarta EE',                    tags: [], divider: true },
+  { id: 'java-ee-overview',   cat: 'java_ee', title: '全体像と歴史',                      tags: ['J2EE', 'Java EE', 'Jakarta EE'] },
+  { id: 'java-ee-servlet',    cat: 'java_ee', title: 'Servlet / Filter / Scope',        tags: ['Servlet', 'Filter', 'Session'] },
+  { id: 'java-ee-jpa',        cat: 'java_ee', title: 'JPA — Java Persistence API',      tags: ['JPA', 'EntityManager', 'JPQL', 'N+1'] },
+  { id: 'java-ee-cdi',        cat: 'java_ee', title: 'CDI と EJB',                      tags: ['CDI', '@Inject', 'EJB', 'Stateless'] },
+  { id: 'java-ee-jaxrs',      cat: 'java_ee', title: 'JAX-RS（REST）/ JMS',             tags: ['JAX-RS', 'REST', 'JMS', 'MDB'] },
+  { id: 'java-ee-modern',     cat: 'java_ee', title: 'マイクロサービス時代の技術選択',    tags: ['Quarkus', 'MicroProfile', 'Spring'] },
 
 ];

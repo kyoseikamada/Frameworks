@@ -1,0 +1,61 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">JPA — Java Persistence API</div>
+  <div class="s-pg">java-ee-03</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JPA の基本概念</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>用語</th><th>説明</th></tr>
+        <tr><td>Entity</td><td>DB テーブルに対応するクラス（@Entity）</td></tr>
+        <tr><td>EntityManager</td><td>Entity の CRUD・クエリを行うコア API</td></tr>
+        <tr><td>PersistenceContext</td><td>EntityManager が管理する Entity のキャッシュ（1 次キャッシュ）</td></tr>
+        <tr><td>JPQL</td><td>テーブルではなく Entity クラスを対象とするクエリ言語</td></tr>
+        <tr><td>Lazy / Eager</td><td>関連 Entity のロード戦略（FetchType）</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">Entity 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @OneToMany(mappedBy = "user",
+               fetch = FetchType.LAZY,
+               cascade = CascadeType.ALL)
+    private List<Order> orders;
+}</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">EntityManager の操作</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@PersistenceContext
+EntityManager em;
+
+// 作成
+User user = new User("Alice");
+em.persist(user);
+
+// 主キーで取得（1 次キャッシュを利用）
+User found = em.find(User.class, 1L);
+
+// JPQL クエリ
+List<User> list = em.createQuery(
+    "SELECT u FROM User u"
+    + " WHERE u.name = :name", User.class)
+    .setParameter("name", "Alice")
+    .getResultList();
+
+// 削除
+em.remove(found);</pre>
+      <div class="label-sm" style="margin-bottom:4px;margin-top:8px">N+1 問題と JOIN FETCH</div>
+      <div class="info-box" style="font-size:10px">Lazy ロードの関連を forEach でアクセスすると N+1 本の SQL が発行される。<br>対策：<code>SELECT u FROM User u JOIN FETCH u.orders</code> で一括取得する。</div>
+    </div>
+  </div>
+</div>

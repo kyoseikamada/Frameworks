@@ -1,0 +1,44 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">Jakarta EE の全体像と歴史</div>
+  <div class="s-pg">java-ee-01</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">名称の変遷</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>時期</th><th>名称</th><th>管理</th></tr>
+        <tr><td>1999–2005</td><td>J2EE 1.2〜1.4</td><td>Sun Microsystems</td></tr>
+        <tr><td>2006–2017</td><td>Java EE 5〜8</td><td>Oracle</td></tr>
+        <tr><td>2018〜</td><td>Jakarta EE 8〜11</td><td>Eclipse Foundation</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">主要技術スタック</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>層</th><th>仕様</th><th>役割</th></tr>
+        <tr><td rowspan="2">Web 層</td><td>Servlet</td><td>HTTP 処理の基盤</td></tr>
+        <tr><td>JSP / JSF</td><td>UI 生成</td></tr>
+        <tr><td rowspan="2">ビジネス層</td><td>EJB</td><td>トランザクション・セキュリティ</td></tr>
+        <tr><td>CDI</td><td>依存性注入・イベント</td></tr>
+        <tr><td rowspan="2">データ層</td><td>JPA</td><td>O/R マッピング</td></tr>
+        <tr><td>JTA</td><td>分散トランザクション</td></tr>
+        <tr><td rowspan="2">連携</td><td>JAX-RS</td><td>REST API</td></tr>
+        <tr><td>JMS</td><td>非同期メッセージング</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">アプリケーションサーバー</div>
+      <div class="info-box" style="margin-bottom:8px;font-size:10px">Jakarta EE は<strong>仕様</strong>。アプリサーバーが実装を提供する。WAR / EAR 形式でデプロイされ、サーバーがコンテナとして動作する。</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>サーバー</th><th>種別</th></tr>
+        <tr><td>WildFly（旧 JBoss）</td><td>OSS / Red Hat</td></tr>
+        <tr><td>GlassFish</td><td>OSS / リファレンス実装</td></tr>
+        <tr><td>Payara</td><td>GlassFish 派生・商用サポートあり</td></tr>
+        <tr><td>Open Liberty</td><td>OSS / IBM</td></tr>
+        <tr><td>WebLogic</td><td>商用 / Oracle</td></tr>
+        <tr><td>WebSphere</td><td>商用 / IBM</td></tr>
+      </table>
+      <div class="info-box" style="font-size:10px">⚠ <strong>Tomcat</strong> はサーブレットコンテナのみ（EJB・JPA 等は含まない）。Spring Boot + Tomcat 組み合わせが実務では最も多い。</div>
+    </div>
+  </div>
+</div>

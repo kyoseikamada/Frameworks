@@ -1,0 +1,50 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">スレッドと並行処理</div>
+  <div class="s-pg">java-basics-05</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">スレッド生成・実行の方法</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">// ① Runnable（基本）
+Thread t = new Thread(() ->
+    System.out.println("running"));
+t.start();
+
+// ② ExecutorService（実務標準）
+ExecutorService pool =
+    Executors.newFixedThreadPool(4);
+Future<String> f = pool.submit(() -> fetch());
+String result = f.get(); // ブロッキング
+pool.shutdown();
+
+// ③ CompletableFuture（非同期チェーン）
+CompletableFuture
+    .supplyAsync(() -> fetchData())
+    .thenApply(data -> process(data))
+    .thenAccept(r -> save(r))
+    .exceptionally(ex -> { log(ex); return null; });
+
+// ④ Virtual Thread（Java 21+）
+try (var exec =
+        Executors.newVirtualThreadPerTaskExecutor()) {
+    exec.submit(() -> handleRequest());
+}</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">スレッドセーフの手段</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>手段</th><th>特徴・用途</th></tr>
+        <tr><td>synchronized</td><td>メソッド・ブロック単位のモニターロック</td></tr>
+        <tr><td>volatile</td><td>変数の可視性保証。read/write のアトミック性</td></tr>
+        <tr><td>ReentrantLock</td><td>tryLock・タイムアウトなど細かい制御</td></tr>
+        <tr><td>AtomicInteger 等</td><td>CAS によるロックフリー操作</td></tr>
+        <tr><td>ConcurrentHashMap</td><td>セグメントロックで高スループット</td></tr>
+        <tr><td>BlockingQueue</td><td>スレッド間のプロデューサ・コンシューマ</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">Virtual Thread（Project Loom）</div>
+      <div class="info-box" style="font-size:10px">Java 21 正式リリース。JVM が管理する超軽量スレッド。I/O 待ちでも OS スレッドをブロックしない。<br>従来の<strong>非同期コールバック地獄</strong>なしに、<strong>1 リクエスト 1 スレッド</strong>の同期スタイルで高スループットを達成できる。</div>
+    </div>
+  </div>
+</div>

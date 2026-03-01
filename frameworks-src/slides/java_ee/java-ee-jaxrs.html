@@ -1,0 +1,74 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">JAX-RS（REST API）と JMS（メッセージング）</div>
+  <div class="s-pg">java-ee-05</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JAX-RS — REST API の実装</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:11px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@Path("/users")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class UserResource {
+    @Inject UserService service;
+
+    @GET
+    public List<User> getAll() {
+        return service.findAll();
+    }
+
+    @GET @Path("/{id}")
+    public Response getById(
+            @PathParam("id") Long id) {
+        User u = service.find(id);
+        return u != null
+            ? Response.ok(u).build()
+            : Response.status(404).build();
+    }
+
+    @POST
+    public Response create(User user) {
+        service.save(user);
+        return Response.status(201).build();
+    }
+
+    @DELETE @Path("/{id}")
+    public Response delete(
+            @PathParam("id") Long id) {
+        service.delete(id);
+        return Response.noContent().build();
+    }
+}</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JMS — 非同期メッセージング</div>
+      <div class="info-box" style="margin-bottom:8px;font-size:10px">非同期メッセージングの API 仕様。ActiveMQ・IBM MQ 等のブローカーを抽象化。疎結合・負荷分散・信頼性の高い非同期処理に使う。</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>モデル</th><th>説明</th></tr>
+        <tr><td>Queue（P2P）</td><td>1 対 1。1 メッセージを 1 コンシューマが受信</td></tr>
+        <tr><td>Topic（Pub/Sub）</td><td>1 対多。全サブスクライバが受信</td></tr>
+      </table>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">// 送信側
+@Inject JMSContext context;
+@Resource(lookup = "java:global/jms/OrderQueue")
+Queue queue;
+
+void send(String msg) {
+    context.createProducer().send(queue, msg);
+}
+
+// 受信側（Message Driven Bean）
+@MessageDriven(activationConfig = {
+  @ActivationConfigProperty(
+    propertyName = "destinationLookup",
+    propertyValue = "java:global/jms/OrderQueue")
+})
+public class OrderMDB implements MessageListener {
+    public void onMessage(Message msg) {
+        // 非同期で呼ばれる
+    }
+}</pre>
+    </div>
+  </div>
+</div>

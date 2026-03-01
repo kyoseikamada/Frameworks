@@ -1,0 +1,53 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">ガベージコレクション（GC）</div>
+  <div class="s-pg">java-basics-03</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Heap の世代構造</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">┌────────────────────────────────┐
+│          Young 世代              │ ← Minor GC（頻繁・短時間）
+│  Eden │ Survivor0 │ Survivor1  │
+├────────────────────────────────┤
+│          Old 世代                │ ← Major GC（低頻度・長時間）
+└────────────────────────────────┘
+
+新規オブジェクト → Eden に割り当て
+Minor GC 生き残り → Survivor へ
+一定回数生存 → Old 世代へ昇格</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">GC の種類</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>GC</th><th>特徴</th><th>主な用途</th></tr>
+        <tr><td>Serial</td><td>シングルスレッド</td><td>小規模・組込み</td></tr>
+        <tr><td>Parallel</td><td>高スループット</td><td>バッチ処理</td></tr>
+        <tr><td><strong>G1 GC</strong></td><td>停止時間予測可能。Java 9 デフォルト</td><td>汎用</td></tr>
+        <tr><td><strong>ZGC</strong></td><td>停止 &lt;1ms。大ヒープ対応</td><td>低レイテンシ</td></tr>
+        <tr><td>Shenandoah</td><td>ZGC 同等の低レイテンシ</td><td>低レイテンシ</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">GC チューニングの基本</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># G1GC 推奨設定
+-XX:+UseG1GC
+-Xms4g -Xmx4g             # 初期=最大で固定
+-XX:MaxGCPauseMillis=200   # 目標停止時間(ms)
+
+# GC ログ（Java 11+）
+-Xlog:gc*:file=gc.log:time,uptime
+
+# OOM 時に Heap ダンプ
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/tmp/heap.hprof</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">チューニングの原則</div>
+      <ul class="cl">
+        <li><strong>まず計測</strong>：GC ログを取得してから判断する</li>
+        <li><strong>Heap を大きくしすぎない</strong>：Major GC の停止時間が増える</li>
+        <li><strong>Young 世代を適切に</strong>：短命オブジェクトは Young で回収させる</li>
+        <li><strong>オブジェクト生成を減らす</strong>：そもそも GC の根本対策</li>
+        <li><strong>初期=最大サイズを揃える</strong>：Heap リサイズのオーバーヘッドを防ぐ</li>
+      </ul>
+    </div>
+  </div>
+</div>

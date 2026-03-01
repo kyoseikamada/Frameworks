@@ -1,0 +1,52 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">JVM の構造と実行の流れ</div>
+  <div class="s-pg">java-basics-01</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java 実行の全体像</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">ソースコード (.java)
+      ↓  javac（コンパイラ）
+バイトコード (.class)
+      ↓  java（JVM起動）
+  ┌──────────────────────────────┐
+  │        JVM                    │
+  │  ┌─────────────┐             │
+  │  │ Class Loader │ .classを読込│
+  │  └─────────────┘             │
+  │  ┌────────────────────────┐  │
+  │  │ Runtime Data Areas     │  │
+  │  │  Heap / Stack / Method │  │
+  │  └────────────────────────┘  │
+  │  ┌──────────────────────┐    │
+  │  │ Execution Engine      │    │
+  │  │  JIT Compiler         │    │
+  │  │  Interpreter          │    │
+  │  └──────────────────────┘    │
+  └──────────────────────────────┘
+         ↕  JNI
+    ネイティブコード（OS依存）</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JVM のメモリ領域</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>領域</th><th>内容</th><th>共有</th></tr>
+        <tr><td><strong>Heap</strong></td><td>オブジェクト・配列。GC対象。Young / Old 世代に分かれる</td><td>全スレッド</td></tr>
+        <tr><td><strong>Metaspace</strong></td><td>クラス定義・定数プール。Java 8 で PermGen を置換</td><td>全スレッド</td></tr>
+        <tr><td><strong>Stack</strong></td><td>メソッド呼び出しフレーム・ローカル変数</td><td>スレッド専有</td></tr>
+        <tr><td><strong>PC Register</strong></td><td>現在実行中の命令アドレス</td><td>スレッド専有</td></tr>
+        <tr><td><strong>Native Stack</strong></td><td>JNI 呼び出し用</td><td>スレッド専有</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">主要な JVM 起動オプション</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">-Xms512m              # Heap 初期サイズ
+-Xmx2g                # Heap 最大サイズ
+-XX:+UseG1GC          # G1GC を使用
+-XX:+PrintGCDetails   # GC ログ出力
+-verbose:class        # クラスロード状況
+-XX:+HeapDumpOnOutOfMemoryError</pre>
+      <div class="info-box" style="margin-top:8px;font-size:10px">「Write Once, Run Anywhere」の実現手段。<code>.class</code> ファイルはどの OS の JVM でも動く。</div>
+    </div>
+  </div>
+</div>

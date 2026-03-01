@@ -1,0 +1,44 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">Java メモリモデルと型システム・例外</div>
+  <div class="s-pg">java-basics-06</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Java メモリモデル（JMM）</div>
+      <div class="info-box" style="margin-bottom:8px;font-size:10px">マルチスレッドでの<strong>メモリの可視性と操作順序</strong>を規定する仕様。各スレッドは CPU キャッシュに値を持つため、明示的な同期なしに他スレッドの変更は見えない。</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>概念</th><th>内容</th></tr>
+        <tr><td>happens-before</td><td>A happens-before B なら、A の Write が B から可視</td></tr>
+        <tr><td>volatile</td><td>volatile Write → 後続の volatile Read に happens-before</td></tr>
+        <tr><td>synchronized</td><td>ロック解放 → 次の同じロック取得に happens-before</td></tr>
+        <tr><td>Thread.start()</td><td>start() 前のコード → スレッド内コードに happens-before</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">型システム</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>種別</th><th>例</th><th>格納先</th></tr>
+        <tr><td>プリミティブ</td><td>int, long, double, boolean</td><td>Stack（フィールドは Heap）</td></tr>
+        <tr><td>参照型</td><td>String, List, 自作クラス</td><td>Heap（参照は Stack）</td></tr>
+        <tr><td>配列</td><td>int[], Object[]</td><td>Heap</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">例外の階層構造</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">Throwable
+├── Error  ← 通常 catch しない
+│   ├── OutOfMemoryError
+│   ├── StackOverflowError
+│   └── AssertionError
+└── Exception
+    ├── RuntimeException  ← 非チェック例外
+    │   ├── NullPointerException
+    │   ├── IllegalArgumentException
+    │   └── IndexOutOfBoundsException
+    └── IOException  ← チェック例外
+        ├── FileNotFoundException
+        └── SocketException</pre>
+      <div class="info-box" style="font-size:10px;margin-top:6px"><strong>チェック vs 非チェック：</strong>チェック例外はコンパイラが catch / throws を強制する。実務では Spring 等の影響もあり RuntimeException 系が主流。ライブラリ境界では検査例外も有効。</div>
+    </div>
+  </div>
+</div>

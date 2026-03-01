@@ -1,0 +1,56 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">Servlet / Filter / Scope</div>
+  <div class="s-pg">java-ee-02</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Servlet のライフサイクル</div>
+      <div class="step-flow" style="margin-bottom:10px">
+        <div class="step-item"><div class="step-num" style="background:#1a6a4a">1</div><div class="step-body"><strong>init()</strong> — コンテナ起動時に 1 回。初期化処理（DB 接続等）</div></div>
+        <div class="step-item"><div class="step-num" style="background:#1a6a4a">2</div><div class="step-body"><strong>service() → doGet() / doPost()</strong> — リクエストごとに呼ばれる（スレッドプール）</div></div>
+        <div class="step-item"><div class="step-num" style="background:#1a6a4a">3</div><div class="step-body"><strong>destroy()</strong> — コンテナ停止時に 1 回。リソース解放</div></div>
+      </div>
+      <div class="label-sm" style="margin-bottom:6px">Servlet 実装例</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@WebServlet("/hello")
+public class HelloServlet
+        extends HttpServlet {
+    @Override
+    protected void doGet(
+            HttpServletRequest req,
+            HttpServletResponse res)
+            throws IOException {
+        String name = req.getParameter("name");
+        res.setContentType("text/html;charset=UTF-8");
+        res.getWriter()
+           .println("<h1>Hello, " + name + "!</h1>");
+    }
+}</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Filter — 横断的処理の挿入</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@WebFilter("/*")
+public class LogFilter implements Filter {
+    public void doFilter(
+            ServletRequest req,
+            ServletResponse res,
+            FilterChain chain)
+            throws IOException, ServletException {
+        long start = System.currentTimeMillis();
+        chain.doFilter(req, res); // 次の Filter/Servlet へ
+        long ms = System.currentTimeMillis() - start;
+        System.out.println("Elapsed: " + ms + "ms");
+    }
+}
+// 認証・CORS・文字コード設定などに使う</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">スコープオブジェクト</div>
+      <table class="tbl" style="font-size:10px">
+        <tr><th>スコープ</th><th>クラス</th><th>生存期間</th></tr>
+        <tr><td>Request</td><td>HttpServletRequest</td><td>1 リクエスト</td></tr>
+        <tr><td>Session</td><td>HttpSession</td><td>セッション期間</td></tr>
+        <tr><td>Application</td><td>ServletContext</td><td>サーバー起動中</td></tr>
+      </table>
+    </div>
+  </div>
+</div>

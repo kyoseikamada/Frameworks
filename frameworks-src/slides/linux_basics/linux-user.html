@@ -26,37 +26,46 @@
     </div>
     <div>
       <div class="label-sm" style="margin-bottom:6px">ユーザー管理コマンド</div>
-      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># ユーザー作成
-useradd -m -s /bin/bash alice
-# -m: ホーム作成  -s: シェル指定
-passwd alice       # パスワード設定
+        <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9">
 
-# ユーザー変更
-usermod -aG docker alice  # グループ追加
-usermod -s /bin/zsh alice # シェル変更
-usermod -L alice          # アカウントロック
+          # ユーザー切り替え
+          su -ユーザー # ユーザー省略でrootに切り替え
 
-# ユーザー削除
-userdel -r alice   # -r: ホームも削除
+          # ユーザーの所属確認
+          id [ユーザー]
 
-# グループ管理
-groupadd devteam
-groupdel devteam
-gpasswd -a alice devteam   # メンバー追加
-gpasswd -d alice devteam   # メンバー削除
+          # ユーザー作成
+          useradd -m -s /bin/bash alice
+          # -m: ホーム作成  -s: シェル指定
+          passwd alice       # パスワード設定
 
-# 確認
-id alice           # uid/gid/groups表示
-groups alice       # 所属グループ
-who                # ログイン中ユーザー
-w                  # 詳細なログイン情報
-last               # ログイン履歴
+          # ユーザー変更
+          usermod -aG docker alice  # グループ追加
+          usermod -s /bin/zsh alice # シェル変更
+          usermod -L alice          # アカウントロック
 
-# sudo 操作
-sudo command           # root権限で実行
-sudo -u alice command  # aliceとして実行
-sudo su -              # rootシェルに切り替え
-visudo                 # sudoers編集</pre>
+          # ユーザー削除
+          userdel -r alice   # -r: ホームも削除
+
+          # グループ管理
+          groupadd devteam
+          groupdel devteam
+          gpasswd -a alice devteam   # メンバー追加
+          gpasswd -d alice devteam   # メンバー削除
+
+          # 確認
+          id alice           # uid/gid/groups表示
+          groups alice       # 所属グループ
+          who                # ログイン中ユーザー
+          w                  # 詳細なログイン情報
+          last               # ログイン履歴
+
+          # sudo 操作
+          sudo command           # root権限で実行
+          sudo -u alice command  # aliceとして実行
+          sudo su -              # rootシェルに切り替え
+          visudo                 # sudoers編集
+      </pre>
     </div>
   </div>
 </div>

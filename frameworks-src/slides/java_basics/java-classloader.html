@@ -1,0 +1,50 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">クラスローダーの仕組み</div>
+  <div class="s-pg">java-basics-02</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">クラスローダーの階層</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:12px;font-size:10px;font-family:'Space Mono',monospace;line-height:2.0">Bootstrap ClassLoader
+  ↑ 親委譲
+Platform ClassLoader（Java 9+）
+  ↑ 親委譲
+Application ClassLoader
+  （-classpath 上のクラス）
+  ↑ 親委譲
+User-defined ClassLoader
+  （独自実装・Tomcat 等）</pre>
+      <div class="label-sm" style="margin-bottom:6px;margin-top:8px">親委譲モデル（Parent Delegation）</div>
+      <div class="info-box" style="font-size:10px;margin-bottom:10px">クラスのロード要求を受けると、まず<strong>親に委譲</strong>する。見つからなければ自分でロードする。<code>java.lang.String</code> など JDK のコアクラスが上書きされるのを防ぐセキュリティ機構。</div>
+      <div class="label-sm" style="margin-bottom:6px">カスタムクラスローダーの用途</div>
+      <ul class="cl">
+        <li>Tomcat / OSGi：Web アプリごとにクラス空間を分離</li>
+        <li>暗号化された .class ファイルを復号してロード</li>
+        <li>プラグイン機構（IDE プラグイン等）の実現</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">クラスのロード → リンク → 初期化</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>フェーズ</th><th>内容</th></tr>
+        <tr><td>Loading</td><td>.class をバイト列として読み込む</td></tr>
+        <tr><td>Verification</td><td>バイトコードが仕様に適合しているか検証</td></tr>
+        <tr><td>Preparation</td><td>static 変数にデフォルト値を割り当て</td></tr>
+        <tr><td>Resolution</td><td>シンボリック参照を実体参照に変換</td></tr>
+        <tr><td>Initialization</td><td>static 初期化子・static 変数の初期化を実行</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">確認コマンド</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.9"># クラスロードの状況を出力
+java -verbose:class MyApp
+
+# クラスパスの確認
+java -XshowSettings:all 2>&1 | grep path
+
+# モジュール情報（Java 9+）
+java --list-modules
+java --describe-module java.base</pre>
+    </div>
+  </div>
+</div>

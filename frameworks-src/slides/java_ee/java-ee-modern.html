@@ -1,0 +1,40 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">Jakarta EE とマイクロサービス時代の選択</div>
+  <div class="s-pg">java-ee-06</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">Jakarta EE vs Spring の位置づけ</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th></th><th>Jakarta EE</th><th>Spring</th></tr>
+        <tr><td>種別</td><td>標準仕様（Eclipse Foundation）</td><td>OSS 実装（VMware）</td></tr>
+        <tr><td>DI</td><td>CDI / @Inject</td><td>@Autowired</td></tr>
+        <tr><td>REST</td><td>JAX-RS</td><td>Spring MVC / WebFlux</td></tr>
+        <tr><td>ORM</td><td>JPA（仕様）</td><td>Spring Data JPA（JPA を活用）</td></tr>
+        <tr><td>トランザクション</td><td>JTA</td><td>Spring Transaction</td></tr>
+      </table>
+      <div class="info-box" style="font-size:10px;margin-bottom:10px">Spring は Jakarta EE の<strong>競合ではなく補完関係</strong>に近い。JPA は Spring でも使い、Servlet の上に Spring MVC が乗る。</div>
+      <div class="label-sm" style="margin-bottom:6px">MicroProfile</div>
+      <div class="info-box" style="font-size:10px">Jakarta EE をマイクロサービス向けに拡張した仕様群。Health / Metrics / Config / Fault Tolerance（Circuit Breaker 等）/ JWT / OpenAPI / Tracing などを標準化。</div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">マイクロサービス対応フレームワーク</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>FW</th><th>特徴</th></tr>
+        <tr><td><strong>Quarkus</strong></td><td>Red Hat 製。GraalVM Native Image 対応。起動数十 ms・メモリ少</td></tr>
+        <tr><td><strong>Micronaut</strong></td><td>コンパイル時 DI。リフレクション不使用で高速起動</td></tr>
+        <tr><td>Helidon</td><td>Oracle 製。MP（MicroProfile 準拠）と SE の 2 系統</td></tr>
+        <tr><td>Open Liberty</td><td>IBM 製。Jakarta EE + MicroProfile 完全準拠</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">現在の技術選択の目安</div>
+      <ul class="cl">
+        <li><strong>レガシー移行・大規模エンタープライズ</strong>：Jakarta EE / WildFly / WebLogic</li>
+        <li><strong>新規 Web アプリ（実務デファクト）</strong>：Spring Boot + Tomcat / Undertow</li>
+        <li><strong>クラウドネイティブ・高速起動重視</strong>：Quarkus / Micronaut（GraalVM Native）</li>
+        <li><strong>リアクティブ・高並列 I/O</strong>：Spring WebFlux / Quarkus Reactive</li>
+      </ul>
+    </div>
+  </div>
+</div>

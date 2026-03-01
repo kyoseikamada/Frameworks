@@ -1,0 +1,41 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#b06000">Java基礎</div>
+  <div class="s-title">JIT コンパイルとパフォーマンス</div>
+  <div class="s-pg">java-basics-04</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JIT（Just-In-Time）コンパイルとは</div>
+      <div class="info-box" style="margin-bottom:10px">実行時に<strong>頻繁に呼ばれるバイトコードをネイティブコードに変換</strong>してキャッシュする。2 回目以降は高速なネイティブコードが実行される。</div>
+      <div class="label-sm" style="margin-bottom:6px">HotSpot JIT の段階</div>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-num" style="background:#b06000">1</div>
+          <div class="step-body"><strong>インタプリタ実行</strong>：起動直後。バイトコードを 1 命令ずつ解釈実行。プロファイル情報を収集</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:#b06000">2</div>
+          <div class="step-body"><strong>C1 コンパイル</strong>（クライアントコンパイラ）：軽い最適化。呼び出し回数の閾値で起動</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:#b06000">3</div>
+          <div class="step-body"><strong>C2 コンパイル</strong>（サーバーコンパイラ）：プロファイル情報をもとにアグレッシブな最適化</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">JIT が行う主な最適化</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:10px">
+        <tr><th>最適化</th><th>内容</th></tr>
+        <tr><td>インライン展開</td><td>小さなメソッド呼び出しを呼び出し元に埋め込み、呼び出しオーバーヘッドを削減</td></tr>
+        <tr><td>エスケープ解析</td><td>Heap ではなく Stack に割り当て可能なオブジェクトを判定して GC 負荷を削減</td></tr>
+        <tr><td>ループ展開</td><td>ループの条件判定・インクリメントのオーバーヘッドを削減</td></tr>
+        <tr><td>投機的最適化</td><td>実行時の型情報をもとに最速コードを生成。外れたら Deoptimize して再コンパイル</td></tr>
+      </table>
+      <div class="label-sm" style="margin-bottom:6px">ウォームアップ問題と GraalVM</div>
+      <div class="info-box" style="font-size:10px">JIT が効果を発揮するまで時間がかかる（ウォームアップ）。起動直後のレイテンシが高くなる問題がある。<br><br>
+        <strong>GraalVM Native Image</strong>：AOT（Ahead-of-Time）コンパイルでネイティブバイナリを生成。起動時間をミリ秒単位に短縮。Quarkus / Micronaut が活用。</div>
+    </div>
+  </div>
+</div>

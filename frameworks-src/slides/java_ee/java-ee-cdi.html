@@ -1,0 +1,51 @@
+<div class="s-header">
+  <div class="s-tag" style="background:#1a6a4a">Jakarta EE</div>
+  <div class="s-title">CDI（依存性注入）と EJB</div>
+  <div class="s-pg">java-ee-04</div>
+</div>
+<div class="s-body">
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">CDI（Contexts and Dependency Injection）</div>
+      <div class="info-box" style="margin-bottom:8px;font-size:10px">オブジェクトの生成・ライフサイクル・注入をコンテナに委ねる。Spring の <code>@Autowired</code> に相当するのが <code>@Inject</code>。</div>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@ApplicationScoped          // アプリで 1 インスタンス
+public class UserService {
+    @Inject
+    UserRepository repo;    // コンテナが自動注入
+
+    public User find(Long id) {
+        return repo.findById(id);
+    }
+}
+
+// CDI スコープ一覧
+@RequestScoped    // 1 リクエストで 1 インスタンス
+@SessionScoped    // セッションで 1 インスタンス
+@ApplicationScoped // アプリ全体で 1 インスタンス
+@Dependent        // 注入先と同じスコープ（デフォルト）</pre>
+    </div>
+    <div>
+      <div class="label-sm" style="margin-bottom:6px">EJB（Enterprise JavaBeans）</div>
+      <div class="info-box" style="margin-bottom:8px;font-size:10px">トランザクション管理・セキュリティ・リモート呼び出し等をアノテーションで宣言できる。現在は CDI + JTA + Security で代替できるケースが多い。</div>
+      <table class="tbl" style="font-size:10px;margin-bottom:8px">
+        <tr><th>種別</th><th>特徴</th></tr>
+        <tr><td>@Stateless</td><td>状態を持たない。最も一般的。スレッドセーフ</td></tr>
+        <tr><td>@Stateful</td><td>クライアントセッションごとに状態を保持</td></tr>
+        <tr><td>@Singleton</td><td>アプリで 1 インスタンス。@Lock で並行制御</td></tr>
+        <tr><td>@MessageDriven</td><td>JMS メッセージを非同期受信</td></tr>
+      </table>
+      <pre style="background:#1a1814;color:#e8e0d0;padding:10px;font-size:10px;font-family:'Space Mono',monospace;line-height:1.8">@Stateless
+@TransactionAttribute(REQUIRED)  // トランザクション自動管理
+public class OrderService {
+    @Inject UserService userService;
+
+    public void placeOrder(Order order) {
+        // コンテナがトランザクションを開始・コミット
+        validate(order);
+        userService.deductPoints(order.userId());
+        persist(order);
+    }
+}</pre>
+    </div>
+  </div>
+</div>
