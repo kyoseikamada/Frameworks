@@ -139,4 +139,8 @@ export const SLIDES = [
   { id: 'java-ee-jaxrs',      cat: 'java_ee', title: 'JAX-RS（REST）/ JMS',             tags: ['JAX-RS', 'REST', 'JMS', 'MDB'] },
   { id: 'java-ee-modern',     cat: 'java_ee', title: 'マイクロサービス時代の技術選択',    tags: ['Quarkus', 'MicroProfile', 'Spring'] },
 
+  // ---- ⑫ Excel ----
+  { id: 'div-excel',          cat: 'excel', title: '⑫ Excel', tags: [], divider: true },
+  { id: 'excel-formulas',     cat: 'excel', title: '表作成の基本ルール', tags: ['表'] },
+
 ];
