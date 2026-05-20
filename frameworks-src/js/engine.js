@@ -50,18 +50,6 @@ function buildSidebar() {
   const container = document.getElementById('sb-content');
   container.innerHTML = '';
 
-  // all カテゴリ（表紙・まとめ）
-  const topItems = SLIDES.reduce((acc, s, i) => {
-    if (s.cat === 'all') acc.push({ s, i });
-    return acc;
-  }, []);
-  if (topItems.length) {
-    const sec = document.createElement('div');
-    sec.className = 'sb-section';
-    topItems.forEach(({ s, i }) => sec.appendChild(makeSbItem(s, i)));
-    container.appendChild(sec);
-  }
-
   // カテゴリをorder順で並べる
   const orderedCats = Object.entries(CATEGORIES)
     .sort(([, a], [, b]) => a.order - b.order)
@@ -203,14 +191,10 @@ function highlightSbItem(idx) {
 /* ============================================================
    ナビゲーション
    ============================================================ */
-function goTo(idx) {
-  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('slide-' + idx);
-  if (el) el.classList.add('active');
+function goTo(idx, smooth = true) {
   current = idx;
-  // スライド切替時に #stage のスクロールをトップに戻す
-  const stage = document.getElementById('stage');
-  if (stage) stage.scrollTop = 0;
+  const el = document.getElementById('slide-' + idx);
+  if (el) el.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant', block: 'start' });
   syncUI();
 }
 
@@ -242,7 +226,7 @@ function applySpFilter() {
     if (!el) return;
     el.classList.toggle('sp-hidden', !filteredIndices.includes(i));
   });
-  spCurrentIdx = filteredIndices[0] ?? 0;
+  spCurrentIdx = filteredIndices.find(i => !SLIDES[i].divider) ?? filteredIndices[0] ?? 0;
   const first = document.getElementById('slide-' + spCurrentIdx);
   if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
   syncSpNav();
@@ -257,6 +241,30 @@ function setupScrollObserver() {
       }
     });
   }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+  document.querySelectorAll('.slide').forEach(el => obs.observe(el));
+}
+
+/* ============================================================
+   PC: フィルタ適用 & スクロール位置監視
+   ============================================================ */
+function applyPcFilter() {
+  SLIDES.forEach((_, i) => {
+    const el = document.getElementById('slide-' + i);
+    if (!el) return;
+    el.classList.toggle('slide-hidden', !filteredIndices.includes(i));
+  });
+}
+
+function setupPcScrollObserver() {
+  const stage = document.getElementById('stage');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = parseInt(e.target.id.replace('slide-', ''), 10);
+        if (filteredIndices.includes(id)) { current = id; syncUI(); }
+      }
+    });
+  }, { root: stage, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
   document.querySelectorAll('.slide').forEach(el => obs.observe(el));
 }
 
@@ -290,11 +298,12 @@ window.filterCat = (cat, btn) => {
   filteredIndices = cat === 'all'
     ? SLIDES.map((_, i) => i)
     : SLIDES.reduce((acc, s, i) => {
-        if (s.cat === cat || s.cat === 'all') acc.push(i);
+        if (s.cat === cat) acc.push(i);
         return acc;
       }, []);
+  const firstContent = filteredIndices.find(i => !SLIDES[i].divider) ?? filteredIndices[0] ?? 0;
   if (isSP()) { applySpFilter(); closeSidebar(); }
-  else { buildDots(); goTo(filteredIndices[0] ?? 0); }
+  else { applyPcFilter(); buildDots(); goTo(firstContent, false); }
 };
 
 window.toggleSidebar = () => {
@@ -315,14 +324,16 @@ async function init() {
   buildSidebar();
   buildOverlay();
 
+  const firstContent = filteredIndices.find(i => !SLIDES[i].divider) ?? 0;
   if (isSP()) {
     buildSpNav();
-    spCurrentIdx = 0;
+    spCurrentIdx = firstContent;
     syncSpNav();
     setupScrollObserver();
   } else {
     buildDots();
-    goTo(0);
+    goTo(firstContent, false);
+    setupPcScrollObserver();
   }
 }
 

@@ -23,13 +23,10 @@ export const CATEGORIES = {
   linux_cmd:    { name: 'Linuxコマンド',       color: '#2a4a6a', order: 9  },
   java_basics:  { name: 'Java基礎',            color: '#b06000', order: 10 },
   java_ee:      { name: 'Jakarta EE',          color: '#1a6a4a', order: 11 },
+  excel:        { name: 'Excel',                color: '#7a4a1a', order: 12 },
 };
 
 export const SLIDES = [
-
-  // ---- 表紙 / まとめ ----
-  { id: 'cover',  cat: 'all', title: '表紙',   tags: [] },
-  { id: 'closer', cat: 'all', title: 'まとめ', tags: [] },
 
   // ---- ① システム開発 ----
   { id: 'div-sys',      cat: 'sys', title: '① システム開発',          tags: [], divider: true },
